@@ -1,0 +1,16 @@
+{
+    "name": "NRSDK_Editor",
+    "references": [
+        "GUID:e0da825f3abe042fc8b1951316fbf7ae"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
