@@ -1,0 +1,17 @@
+{
+    "name": "OculusEditor",
+    "references": [
+        "GUID:ead3eae54ae144c868ebdddd3dd0b292",
+        "GUID:f64c9ebcd7899c3448a08dc9f9ddbe30"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
