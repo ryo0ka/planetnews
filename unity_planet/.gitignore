@@ -61,3 +61,7 @@ crashlytics-build.properties
 # rider
 .idea/
 *.DotSettings.user
+
+# custom exclude
+GitIgnore/
+GitIgnore.meta
