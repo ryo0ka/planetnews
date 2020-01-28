@@ -1,0 +1,14 @@
+{
+    "name": "CountryCodeToGps",
+    "references": [
+        "GUID:ecdd01507467e4185ab6d71349f6c4bb"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
