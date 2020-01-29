@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Planet/Planet.unity
+    path: Assets/Planet/Rotation Demo/Planet.unity
     guid: 4474a72c934db4d648949a39a0c64f7c
   m_configObjects: {}
