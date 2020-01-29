@@ -10,10 +10,7 @@ namespace Planet.Views
 		Transform _markerRoot;
 
 		[SerializeField]
-		Transform _markerPrefab;
-
-		[SerializeField]
-		float _markerHeightOffset;
+		MarkerTransformer _markerPrefab;
 
 		CountryGpsDictionary _countryGpsDictionary;
 		OfflineNewsSource _newsSource;
@@ -35,13 +32,7 @@ namespace Planet.Views
 			var marker = Instantiate(_markerPrefab, _markerRoot);
 			marker.name = $"Marker ({country})";
 
-			marker.localEulerAngles = new Vector2(
-				latlong.Latitude * -1f,
-				latlong.Longitude * -1f);
-
-			var view = marker.GetChild(0);
-			view.localPosition = new Vector3(
-				0, 0, 0.5f + _markerHeightOffset); // assume the diameter be 1f
+			marker.SetPosition(latlong.Latitude, latlong.Longitude);
 		}
 	}
 }
