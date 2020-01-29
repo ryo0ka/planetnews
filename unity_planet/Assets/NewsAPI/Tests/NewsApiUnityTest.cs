@@ -5,6 +5,7 @@ using NewsAPI.Models;
 using NUnit.Framework;
 using UniRx.Async;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.TestTools;
 
 namespace NewsAPI.Tests
@@ -38,6 +39,12 @@ namespace NewsAPI.Tests
 
 		async UniTask DoTestApiTopHeadlines()
 		{
+			using (var testRequest = UnityWebRequest.Get("https://google.com"))
+			{
+				var testResponse = await testRequest.SendWebRequest();
+				Assert.IsNull(testResponse.error, $"'{testResponse.error}' ({testResponse.responseCode})");
+			}
+
 			var client = CreateClient();
 
 			var request = new TopHeadlinesRequest
