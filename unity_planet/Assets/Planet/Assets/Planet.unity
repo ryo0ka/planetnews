@@ -191,9 +191,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d9d3559bd9244b5842949fe6ed647a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _planet: {fileID: 1189405401}
   _markerRoot: {fileID: 1506820678}
-  _markerPrefab: {fileID: 6910028930465007498, guid: 03b5bebf463694f7d9e75ff2307916c4,
+  _markerPrefab: {fileID: 5571523771526809293, guid: 03b5bebf463694f7d9e75ff2307916c4,
     type: 3}
+  sphericalFocusObserveer:
+    _maxFocusedMarkerCount: 4
 --- !u!4 &395097276
 Transform:
   m_ObjectHideFlags: 0
@@ -202,7 +205,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 395097274}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1189405401}
@@ -324,7 +327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1189405401}
   m_Layer: 0
-  m_Name: Planet Transform Root
+  m_Name: Planet Scaler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -338,7 +341,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1189405400}
   m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.99619466}
-  m_LocalPosition: {x: 0, y: 0, z: 0.55}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
   - {fileID: 1413708508}

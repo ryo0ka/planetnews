@@ -34,10 +34,7 @@ namespace Planet.Views
 
 		void UpdatePosition()
 		{
-			_markerRoot.localEulerAngles = new Vector2(
-				_latitude * -1f,
-				_longitude * -1f);
-
+			_markerRoot.localRotation = PlanetMath.GpsToSpherical(_latitude, _longitude);
 			_marker.localPosition = new Vector3(
 				0, 0, PlanetRadius + _heightOffset);
 		}
@@ -46,6 +43,7 @@ namespace Planet.Views
 		{
 			_latitude = latitude;
 			_longitude = longitude;
+
 			UpdatePosition();
 		}
 
