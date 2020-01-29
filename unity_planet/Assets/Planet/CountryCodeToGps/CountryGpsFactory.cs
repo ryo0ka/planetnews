@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using NewsAPI.Constants;
 using UnityEngine;
 
 namespace Planet.CountryCodeToGps
@@ -16,15 +15,20 @@ namespace Planet.CountryCodeToGps
 
 		static CountryGpsDictionary FromCsv(string lines, char separator)
 		{
-			var map = new Dictionary<Countries, LatLong>();
+			var map = new Dictionary<string, LatLong>();
 
 			ReadCsv(lines.Split('\n'), separator, line =>
 			{
-				if (Enum.TryParse(line[0], true, out Countries country))
+				if (line[0] is string country &&
+				    !string.IsNullOrEmpty(country) &&
+				    float.TryParse(line[1], out var latitude) &&
+				    float.TryParse(line[2], out var longitude))
 				{
-					var latitude = float.Parse(line[1]);
-					var longitude = float.Parse(line[2]);
 					map[country] = new LatLong(latitude, longitude);
+				}
+				else
+				{
+					Debug.LogWarning($"Skipped malformed line: '{string.Join(", ", line)}'");
 				}
 			});
 
@@ -32,12 +36,20 @@ namespace Planet.CountryCodeToGps
 		}
 
 		//TODO move to utility
-		static void ReadCsv(IEnumerable<string> sourceLines, char separator, Action<IReadOnlyList<string>> f)
+		static void ReadCsv(IReadOnlyList<string> sourceLines, char separator, Action<IReadOnlyList<string>> f)
 		{
-			foreach (var sourceLine in sourceLines)
+			for (var i = 0; i < sourceLines.Count; i++)
 			{
-				var line = sourceLine.Split(separator);
-				f(line);
+				var components = sourceLines[i].Split(separator);
+				try
+				{
+					f(components);
+				}
+				catch (Exception)
+				{
+					Debug.LogError($"Exception caught at line {i}. Content: {string.Join(", ", components)}");
+					throw;
+				}
 			}
 		}
 	}

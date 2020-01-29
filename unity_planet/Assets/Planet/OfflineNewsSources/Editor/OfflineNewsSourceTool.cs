@@ -14,7 +14,7 @@ namespace Planet.OfflineNewsSources.Editor
 	static class OfflineNewsSourceTool
 	{
 		const string NewsApiKeyFileName = "GitIgnore/NewsApiKey";
-		const string SourceFilePath = "Assets/Planet/OfflineNewsSources/Resources/source.json";
+		const string SourceFilePath = "Assets/Planet/OfflineNewsSources/Resources/OfflineNewsSource.json";
 
 		[MenuItem("Tools/Fetch For Offline News")]
 		static async void FetchForOfflineNews()

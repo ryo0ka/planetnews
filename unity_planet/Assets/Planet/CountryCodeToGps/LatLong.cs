@@ -10,5 +10,10 @@ namespace Planet.CountryCodeToGps
 			Latitude = latitude;
 			Longitude = longitude;
 		}
+
+		public override string ToString()
+		{
+			return $"{nameof(Latitude)}: {Latitude}, {nameof(Longitude)}: {Longitude}";
+		}
 	}
 }

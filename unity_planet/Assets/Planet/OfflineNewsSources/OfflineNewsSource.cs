@@ -9,7 +9,7 @@ namespace Planet.OfflineNewsSources
 	public sealed class OfflineNewsSource
 	{
 		[JsonProperty("content")]
-		public Dictionary<string, OfflineNewsArticle[]> Content { get; }
+		Dictionary<string, OfflineNewsArticle[]> Content { get; }
 
 		public OfflineNewsSource(IReadOnlyDictionary<string, IEnumerable<OfflineNewsArticle>> content)
 		{
@@ -28,5 +28,6 @@ namespace Planet.OfflineNewsSources
 
 		public IEnumerable<OfflineNewsArticle> this[string country] => Content[country];
 		public bool HasCountry(string country) => Content.ContainsKey(country);
+		public IEnumerable<string> Countries => Content.Keys;
 	}
 }
