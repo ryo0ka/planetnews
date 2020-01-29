@@ -1,4 +1,4 @@
-namespace CountryCodeToGps
+namespace Planet.CountryCodeToGps
 {
 	public struct LatLong
 	{

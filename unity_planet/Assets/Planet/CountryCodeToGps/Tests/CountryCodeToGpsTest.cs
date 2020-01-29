@@ -3,7 +3,7 @@ using NewsAPI.Constants;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace CountryCodeToGps.Tests
+namespace Planet.CountryCodeToGps.Tests
 {
 	public class CountryCodeToGpsTest
 	{

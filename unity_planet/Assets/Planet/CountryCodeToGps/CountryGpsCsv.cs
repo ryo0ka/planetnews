@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using NewsAPI.Constants;
-using UnityEngine;
 
-namespace CountryCodeToGps
+namespace Planet.CountryCodeToGps
 {
 	public sealed class CountryGpsCsv
 	{
