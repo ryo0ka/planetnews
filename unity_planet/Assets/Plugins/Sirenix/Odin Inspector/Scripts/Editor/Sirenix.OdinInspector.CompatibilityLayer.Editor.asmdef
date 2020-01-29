@@ -6,7 +6,7 @@
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
-    "autoReferenced": true,
+    "autoReferenced": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "defineConstraints": []

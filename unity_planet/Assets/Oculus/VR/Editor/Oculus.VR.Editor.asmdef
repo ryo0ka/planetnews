@@ -9,6 +9,7 @@
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
+    "autoReferenced": false,
     "versionDefines": [
         {
             "name": "com.unity.xr.management",

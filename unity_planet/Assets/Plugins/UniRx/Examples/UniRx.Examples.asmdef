@@ -8,5 +8,6 @@
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
+    "autoReferenced": false,
     "allowUnsafeCode": false
 }
