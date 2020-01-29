@@ -1,16 +1,22 @@
 using System;
 using System.Collections.Generic;
 using NewsAPI.Constants;
+using UnityEngine;
 
 namespace Planet.CountryCodeToGps
 {
-	public sealed class CountryGpsCsv
+	public static class CountryGpsFactory
 	{
-		readonly IDictionary<Countries, LatLong> _coordinates;
-
-		public CountryGpsCsv(string lines, char separator)
+		public static CountryGpsDictionary FromResource()
 		{
-			_coordinates = new Dictionary<Countries, LatLong>();
+			const string CsvFilePath = "countries";
+			var file = Resources.Load<TextAsset>(CsvFilePath);
+			return FromCsv(file.text, ',');
+		}
+
+		static CountryGpsDictionary FromCsv(string lines, char separator)
+		{
+			var map = new Dictionary<Countries, LatLong>();
 
 			ReadCsv(lines.Split('\n'), separator, line =>
 			{
@@ -18,13 +24,14 @@ namespace Planet.CountryCodeToGps
 				{
 					var latitude = float.Parse(line[1]);
 					var longitude = float.Parse(line[2]);
-					_coordinates[country] = new LatLong(latitude, longitude);
+					map[country] = new LatLong(latitude, longitude);
 				}
 			});
+
+			return new CountryGpsDictionary(map);
 		}
 
-		public LatLong this[Countries country] => _coordinates[country];
-
+		//TODO move to utility
 		static void ReadCsv(IEnumerable<string> sourceLines, char separator, Action<IReadOnlyList<string>> f)
 		{
 			foreach (var sourceLine in sourceLines)
