@@ -13,6 +13,8 @@ namespace Planet.Data
 			ErrorReceiverInstaller.Install(Container);
 			CountryGpsDictionaryInstaller.Install(Container);
 			EventSourceInstaller.Install(Container, disposables);
+
+			new RuntimeGarbageCleaner().AddTo(disposables).Initialize();
 		}
 	}
 }
