@@ -1,6 +1,7 @@
 using System;
 using Planet.CachedImageDownloaders;
 using Planet.Data;
+using Planet.TextureRefCounters;
 using UniRx.Async;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,6 +27,7 @@ namespace Planet.Views
 		IErrorReceiver _errorReceiver;
 
 		string _currentUrl;
+		TextureRef _currentTextureRef;
 
 		[Inject]
 		public void Inject(IImageLoader imageLoader)
@@ -41,12 +43,16 @@ namespace Planet.Views
 
 		public async UniTask LoadImage(string url)
 		{
-			SetTexture(_loadingTexture);
+			// release the last texture
+			_currentTextureRef?.Unuse();
+			_currentTextureRef = null;
+
 			_currentUrl = url;
+			SetTexture(_loadingTexture);
 
 			try
 			{
-				var texture = await _imageLoader.LoadImage(url);
+				var textureRef = await _imageLoader.LoadImage(url);
 
 				// skipped
 				if (_currentUrl != url)
@@ -55,7 +61,9 @@ namespace Planet.Views
 					return;
 				}
 
-				SetTexture(texture);
+				_currentTextureRef = textureRef;
+				_currentTextureRef.Use();
+				SetTexture(_currentTextureRef.Texture);
 			}
 			catch (CachedImageDownloaderException e) when (e.Code == 404)
 			{
@@ -71,6 +79,11 @@ namespace Planet.Views
 		public void LoadDefaultImage()
 		{
 			_currentUrl = null;
+
+			// release the last texture
+			_currentTextureRef?.Unuse();
+			_currentTextureRef = null;
+
 			SetTexture(_defaultTexture);
 		}
 

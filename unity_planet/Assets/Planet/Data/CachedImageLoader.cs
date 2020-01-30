@@ -1,21 +1,31 @@
 using Planet.CachedImageDownloaders;
+using Planet.TextureRefCounters;
 using UniRx.Async;
-using UnityEngine;
 
 namespace Planet.Data
 {
 	class CachedImageLoader : IImageLoader
 	{
 		readonly CachedImageDownloader _downloader;
+		readonly TextureRefCollector _collector;
 
-		public CachedImageLoader(CachedImageDownloader downloader)
+		public CachedImageLoader(
+			CachedImageDownloader downloader,
+			TextureRefCollector collector)
 		{
 			_downloader = downloader;
+			_collector = collector;
 		}
 
-		public UniTask<Texture2D> LoadImage(string url)
+		public async UniTask<TextureRef> LoadImage(string url)
 		{
-			return _downloader.Download(url);
+			if (_collector.TryGetTextureRef(url, out var textureRef))
+			{
+				return textureRef;
+			}
+
+			var texture = await _downloader.Download(url);
+			return _collector.MakeNewTextureRef(url, texture);
 		}
 	}
 }
