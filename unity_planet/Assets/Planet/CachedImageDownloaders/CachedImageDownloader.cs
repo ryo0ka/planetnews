@@ -16,21 +16,39 @@ namespace Planet.CachedImageDownloaders
 
 		public async UniTask<Texture2D> Download(string url)
 		{
-			// just making sure
-			Directory.CreateDirectory(_cachePathGenerator.DirPath);
-
-			var cacheFilePath = _cachePathGenerator.GenerateCachePath(url);
-			if (File.Exists(cacheFilePath))
+			try
 			{
-				var qualifiedCacheFilePath = $"file://{cacheFilePath}";
-				return await DoDownload(qualifiedCacheFilePath);
+				await UniTask.SwitchToThreadPool();
+
+				// just making sure
+				Directory.CreateDirectory(_cachePathGenerator.DirPath);
+
+				var cacheFilePath = _cachePathGenerator.GenerateCachePath(url);
+				if (File.Exists(cacheFilePath))
+				{
+					await UniTask.SwitchToMainThread();
+
+					var qualifiedCacheFilePath = $"file://{cacheFilePath}";
+					return await DoDownload(qualifiedCacheFilePath);
+				}
+
+				await UniTask.SwitchToMainThread();
+
+				var texture = await DoDownload(url);
+				var textureData = texture.EncodeToJPG(80);
+
+				await UniTask.SwitchToThreadPool();
+
+				File.WriteAllBytes(cacheFilePath, textureData);
+
+				await UniTask.SwitchToMainThread();
+
+				return texture;
 			}
-
-			var texture = await DoDownload(url);
-			var textureData = texture.EncodeToJPG(80);
-			File.WriteAllBytes(cacheFilePath, textureData);
-
-			return texture;
+			finally
+			{
+				await UniTask.SwitchToMainThread();
+			}
 		}
 
 		async UniTask<Texture2D> DoDownload(string url)
