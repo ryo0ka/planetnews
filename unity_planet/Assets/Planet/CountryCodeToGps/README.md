@@ -1,0 +1,2 @@
+# Country Code to GPS
+This module works to map country codes ("US" for the USA, etc) to its centroid GPS coordinate (latitude & longitude). We're using Google's CSV file ("countries.csv") which contains all the data necessary.

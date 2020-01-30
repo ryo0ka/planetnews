@@ -1,0 +1,20 @@
+{
+    "name": "PlanetEditor",
+    "references": [
+        "GUID:7a983066561824d649d806a0985f7e88",
+        "GUID:ecdd01507467e4185ab6d71349f6c4bb",
+        "GUID:e15a820d7286f42ff9e2ea05749e1998",
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": []
+}

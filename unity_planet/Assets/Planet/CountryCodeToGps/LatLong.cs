@@ -1,4 +1,4 @@
-namespace CountryCodeToGps
+namespace Planet.CountryCodeToGps
 {
 	public struct LatLong
 	{
@@ -9,6 +9,11 @@ namespace CountryCodeToGps
 		{
 			Latitude = latitude;
 			Longitude = longitude;
+		}
+
+		public override string ToString()
+		{
+			return $"{nameof(Latitude)}: {Latitude}, {nameof(Longitude)}: {Longitude}";
 		}
 	}
 }
