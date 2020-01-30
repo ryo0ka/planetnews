@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Planet.Views
+namespace Planet.Data
 {
 	public static class PlanetMath
 	{

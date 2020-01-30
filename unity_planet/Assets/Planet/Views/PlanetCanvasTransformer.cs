@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Planet.Views
 {
 	[ExecuteInEditMode]
-	public class PlanetCanvasLayouter : MonoBehaviour
+	public class PlanetCanvasTransformer : MonoBehaviour
 	{
 		[SerializeField]
 		Transform _canvasRoot;

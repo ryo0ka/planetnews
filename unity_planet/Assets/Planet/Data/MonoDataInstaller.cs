@@ -3,14 +3,16 @@ using Zenject;
 
 namespace Planet.Data
 {
-	public class DataInstaller : MonoInstaller
+	public class MonoDataInstaller : MonoInstaller
 	{
 		public override void InstallBindings()
 		{
+			var disposables = new CompositeDisposable().AddTo(this);
+
 			ImageLoaderInstaller.Install(Container);
 			ErrorReceiverInstaller.Install(Container);
 			CountryGpsDictionaryInstaller.Install(Container);
-			EventSourceInstaller.Install(Container, new CompositeDisposable().AddTo(this));
+			EventSourceInstaller.Install(Container, disposables);
 		}
 	}
 }
