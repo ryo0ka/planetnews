@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Planet.Views
 {
+	[SelectionBase]
 	public class PlanetNewsView : MonoBehaviour
 	{
 		[SerializeField]
