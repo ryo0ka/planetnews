@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NewsAPI.Constants
 {
-    public enum ErrorCodes
+    public enum NewsApiErrorCode
     {
         ApiKeyExhausted,
         ApiKeyMissing,

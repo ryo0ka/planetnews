@@ -10,7 +10,7 @@ namespace NewsAPI.Models
     /// <summary>
     /// Params for making a request to the /everything endpoint.
     /// </summary>
-    public class EverythingRequest
+    public class NewsApiEverythingRequest
     {
         /// <summary>
         /// The keyword or phrase to search for. Boolean operators are supported.
@@ -35,11 +35,11 @@ namespace NewsAPI.Models
         /// <summary>
         /// The language to restrict articles to.
         /// </summary>
-        public Languages? Language { get; set; }
+        public NewsApiLanguage? Language { get; set; }
         /// <summary>
         /// How should the results be sorted? Relevancy = articles relevant to the Q param come first. PublishedAt = most recent articles come first. Publisher = popular publishers come first.
         /// </summary>
-        public SortBys? SortBy { get; set; }
+        public NewsApiSortBy? SortBy { get; set; }
         /// <summary>
         /// Each request returns a fixed amount of results. Page through them by increasing this.
         /// </summary>

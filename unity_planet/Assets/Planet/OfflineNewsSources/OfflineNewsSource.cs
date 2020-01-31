@@ -9,7 +9,7 @@ namespace Planet.OfflineNewsSources
 	public sealed class OfflineNewsSource
 	{
 		[JsonProperty("content")]
-		Dictionary<string, OfflineNewsArticle[]> Content { get; }
+		Dictionary<string, OfflineNewsArticle[]> Content { get; set; }
 
 		public OfflineNewsSource(IReadOnlyDictionary<string, IEnumerable<OfflineNewsArticle>> content)
 		{

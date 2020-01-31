@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace NewsAPI.Constants
 {
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum Categories
+    public enum NewsApiCategory
     {
         Business,
         Entertainment,

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NewsAPI.Constants
 {
-    public enum Countries
+    public enum NewsApiCountry
     {
         AE,
         /// <summary>

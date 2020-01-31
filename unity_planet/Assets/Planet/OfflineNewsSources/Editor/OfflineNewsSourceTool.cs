@@ -16,7 +16,31 @@ namespace Planet.OfflineNewsSources.Editor
 		const string NewsApiKeyFileName = "GitIgnore/NewsApiKey";
 		const string SourceFilePath = "Assets/Planet/OfflineNewsSources/Resources/OfflineNewsSource.json";
 
-		[MenuItem("Tools/Fetch For Offline News")]
+		static NewsApiClient MakeClient()
+		{
+			var newsKeyFile = Resources.Load<TextAsset>(NewsApiKeyFileName);
+			var newsClient = new NewsApiClient(newsKeyFile.text);
+			return newsClient;
+		}
+
+		[MenuItem("Tools/Offline News Source Tool/Ping Top Headlines")]
+		static async void FetchTopHeadlines()
+		{
+			var newsClient = MakeClient();
+
+			var request = new NewsApiTopHeadlinesRequest
+			{
+				Language = NewsApiLanguage.EN,
+				Country = NewsApiCountry.US,
+				Page = 0,
+				PageSize = 3,
+			};
+
+			newsClient.LogJsonResponses = true;
+			await newsClient.GetTopHeadlines(request);
+		}
+
+		[MenuItem("Tools/Offline News Source Tool/Fetch & Save Top Headlines")]
 		static async void FetchForOfflineNews()
 		{
 			if (!Application.isPlaying)
@@ -25,11 +49,10 @@ namespace Planet.OfflineNewsSources.Editor
 				return;
 			}
 
-			var newsKeyFile = Resources.Load<TextAsset>(NewsApiKeyFileName);
-			var newsClient = new NewsApiClient(newsKeyFile.text);
-			var countries = (Countries[]) Enum.GetValues(typeof(Countries));
+			var newsClient = MakeClient();
+			var countries = (NewsApiCountry[]) Enum.GetValues(typeof(NewsApiCountry));
 			var sourceBuilder = new OfflineNewsSourceBuilder();
-			
+
 			// check writing
 			WriteToFile(SourceFilePath, "");
 
@@ -37,24 +60,23 @@ namespace Planet.OfflineNewsSources.Editor
 			{
 				Debug.Log($"Fetching country '{country}'...");
 
-				var request = new TopHeadlinesRequest
+				var request = new NewsApiTopHeadlinesRequest
 				{
-					Language = Languages.EN,
+					Language = NewsApiLanguage.EN,
 					Country = country,
 					Page = 0,
 					PageSize = 100,
 				};
 
-				var result = await newsClient.GetTopHeadlinesAsync(request);
+				var result = await newsClient.GetTopHeadlines(request);
 
-				if (result.Status != Statuses.Ok)
+				if (result.Status != NewsApiStatus.Ok)
 				{
-					Debug.LogError($"Failed fetching country: {country}, " +
-					               $"for code: {result.Error.Code}, message: {result.Error.Message}");
+					Debug.LogError($"Failed fetching country: {country}. Code: {result.Code}, message: {result.Message}");
 					return;
 				}
 
-				sourceBuilder.Add(country, result.Articles);
+				sourceBuilder.Add(country, "en", result.Articles);
 			}
 
 			var source = sourceBuilder.Build();

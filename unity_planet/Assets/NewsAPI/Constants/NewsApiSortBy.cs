@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NewsAPI.Constants
 {
-    public enum SortBys
+    public enum NewsApiSortBy
     {
         /// <summary>
         /// Sort by publisher popularity

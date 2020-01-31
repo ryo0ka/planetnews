@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace NewsAPI.Constants
 {
-    public enum Statuses
+    public enum NewsApiStatus
     {
+        Unknown,
+        
         /// <summary>
         /// Request was successful
         /// </summary>

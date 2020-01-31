@@ -5,7 +5,6 @@ using NewsAPI.Models;
 using NUnit.Framework;
 using UniRx.Async;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.TestTools;
 
 namespace NewsAPI.Tests
@@ -13,12 +12,6 @@ namespace NewsAPI.Tests
 	public class NewsApiUnityTest
 	{
 		const string ApiKeyFileName = "GitIgnore/NewsApiKey";
-
-		[Test]
-		public void _TestApiKeyResource()
-		{
-			CreateClient();
-		}
 
 		NewsApiClient CreateClient()
 		{
@@ -32,35 +25,46 @@ namespace NewsAPI.Tests
 		}
 
 		[UnityTest]
-		public IEnumerator TestApiTopHeadlines()
+		public IEnumerator GetTopHeadlines()
 		{
-			yield return DoTestApiTopHeadlines().ToCoroutine();
+			yield return DoGetTopHeadlines().ToCoroutine();
 		}
 
-		async UniTask DoTestApiTopHeadlines()
+		async UniTask DoGetTopHeadlines()
 		{
-			using (var testRequest = UnityWebRequest.Get("https://google.com"))
-			{
-				var testResponse = await testRequest.SendWebRequest();
-				Assert.IsNull(testResponse.error, $"'{testResponse.error}' ({testResponse.responseCode})");
-			}
-
 			var client = CreateClient();
-
-			var request = new TopHeadlinesRequest
+			var result = await client.GetTopHeadlines(new NewsApiTopHeadlinesRequest
 			{
-				Language = Languages.EN,
-				Country = Countries.US,
+				Language = NewsApiLanguage.EN,
+				Country = NewsApiCountry.US,
 				Page = 0,
 				PageSize = 10,
-			};
+			});
 
-			var result = await client.GetTopHeadlinesAsync(request);
-			Assert.AreEqual(result.Status == Statuses.Ok, result.Error == null, "Error status and error object presence didn't match");
-			Assert.Null(result.Error, "Error returned. Code: {0}, Message: {1}", result.Error?.Code, result.Error?.Message);
-			Assert.GreaterOrEqual(result.TotalResults, result.Articles.Count, "TotalResults and the number of returned articles didn't match");
+			Assert.AreNotEqual(NewsApiStatus.Unknown, result.Status, "status not read properly");
+			Assert.AreNotEqual(NewsApiStatus.Error, result.Status, $"Error code: {result.Code}, Message: {result.Message}");
+			Assert.IsNotNull(result.Articles, "null article list");
+			Assert.GreaterOrEqual(result.TotalResults, result.Articles.Count(), "count didnt match");
 
 			Debug.Log(string.Join("\n", result.Articles.Select(a => $"{a.Source.Name}: {a.Title}")));
+		}
+
+		[UnityTest]
+		public IEnumerator GetSources()
+		{
+			yield return DoGetSources().ToCoroutine();
+		}
+
+		async UniTask DoGetSources()
+		{
+			var client = CreateClient();
+			client.LogJsonResponses = true;
+			var result = await client.GetSources();
+
+			Assert.AreNotEqual(NewsApiStatus.Unknown, result.Status, "status not read properly");
+			Assert.AreNotEqual(NewsApiStatus.Error, result.Status, $"Error code: {result.Code}, Message: {result.Message}");
+			Assert.IsNotNull(result.Sources, "null source list");
+			Assert.Greater(result.Sources.Count(), 0, "no sources");
 		}
 	}
 }

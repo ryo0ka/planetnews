@@ -14,14 +14,15 @@ namespace Planet.OfflineNewsSources
 			_content = new Dictionary<string, IEnumerable<OfflineNewsArticle>>();
 		}
 
-		public void Add(Countries country, IEnumerable<Article> articles)
+		public void Add(NewsApiCountry country, string language, IEnumerable<NewsApiArticle> articles)
 		{
 			_content[country.ToString()] = articles.Select(a => new OfflineNewsArticle(
 				title: a.Title,
 				description: a.Description,
 				url: a.Url,
 				imageUrl: a.UrlToImage,
-				publishDate: a.PublishedAt));
+				publishDate: a.PublishedAt,
+				language: language));
 		}
 
 		public void Add(string country, IEnumerable<OfflineNewsArticle> articles)

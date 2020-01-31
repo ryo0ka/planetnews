@@ -18,28 +18,32 @@ namespace Planet.OfflineNewsSources.Tests
 				description: "us description 1",
 				url: "us url 1",
 				imageUrl: "us image url 1",
-				publishDate: DateTime.Now));
+				publishDate: DateTime.Now,
+				language: "en"));
 
 			usArticles.Add(new OfflineNewsArticle(
 				title: "us title 2",
 				description: "us description 2",
 				url: "us url 2",
 				imageUrl: "us image url 2",
-				publishDate: DateTime.Now));
+				publishDate: DateTime.Now,
+				language: "en"));
 
 			brArticles.Add(new OfflineNewsArticle(
 				title: "br title 1",
 				description: "br description 1",
 				url: "br url 1",
 				imageUrl: "br image url 1",
-				publishDate: DateTime.Now));
+				publishDate: DateTime.Now,
+				language: "en"));
 
 			brArticles.Add(new OfflineNewsArticle(
 				title: "br title 2",
 				description: "br description 2",
 				url: "br url 2",
 				imageUrl: "br image url 2",
-				publishDate: DateTime.Now));
+				publishDate: DateTime.Now,
+				language: "en"));
 
 			var sourceWriter = new OfflineNewsSourceBuilder();
 			sourceWriter.Add("US", usArticles);

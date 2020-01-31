@@ -10,7 +10,7 @@ namespace NewsAPI.Models
     /// <summary>
     /// Params for making a request to the /top-headlines endpoint.
     /// </summary>
-    public class TopHeadlinesRequest
+    public class NewsApiTopHeadlinesRequest
     {
         /// <summary>
         /// The keyword or phrase to search for. Boolean operators are supported.
@@ -23,15 +23,15 @@ namespace NewsAPI.Models
         /// <summary>
         /// If you want to restrict the headlines to a specific news category, add these here.
         /// </summary>
-        public Categories? Category { get; set; }
+        public NewsApiCategory? Category { get; set; }
         /// <summary>
         /// The language to restrict articles to.
         /// </summary>
-        public Languages? Language { get; set; }
+        public NewsApiLanguage? Language { get; set; }
         /// <summary>
         /// The country of the source to restrict articles to.
         /// </summary>
-        public Countries? Country { get; set; }
+        public NewsApiCountry? Country { get; set; }
         /// <summary>
         /// Each request returns a fixed amount of results. Page through them by increasing this.
         /// </summary>
