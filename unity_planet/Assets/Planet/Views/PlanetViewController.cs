@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Planet.CountryCodeToGps;
 using Planet.Data;
-using Planet.Models;
+using Sirenix.OdinInspector;
 using UniRx;
 using UniRx.Async;
 using UnityEngine;
@@ -22,12 +22,13 @@ namespace Planet.Views
 		[SerializeField]
 		CountryFocusObserver _countryFocusObserveer;
 
-		[SerializeField]
+		[SerializeField, DisableInPlayMode]
 		EventHeadlineView[] _eventHeadlineViews;
 
 		CountryGpsDictionary _countryGpsDictionary;
 		IEventSource _eventSource;
 		Dictionary<string, MarkerView> _markers;
+		EventViewMapper _eventViewMapper;
 
 		[Inject]
 		public void Inject(CountryGpsDictionary countryGpsDictionary)
@@ -44,6 +45,7 @@ namespace Planet.Views
 		void Start()
 		{
 			_markers = new Dictionary<string, MarkerView>();
+			_eventViewMapper = new EventViewMapper(_eventHeadlineViews.Length);
 
 			_eventSource
 				.OnEventsAddedToCountry
@@ -91,15 +93,29 @@ namespace Planet.Views
 				pair.Value.SetFocused(isFocused);
 			}
 
-			int index = 0;
-			foreach (var focusedCountry in _countryFocusObserveer.FocusedCountries)
+			var focusedCountries = _countryFocusObserveer.FocusedCountries;
+			focusedCountries = focusedCountries.Where(c => _eventSource[c].Any());
+
+			_eventViewMapper.UpdateMapping(focusedCountries);
+
+			var mappedCountries = _eventViewMapper.MappedCountries;
+			var mappedEventViews = mappedCountries.Zip(_eventHeadlineViews, (c, v) => (c, v));
+
+			foreach (var (country, eventView) in mappedEventViews)
 			{
-				if (_eventSource[focusedCountry].FirstOrDefault() is IEventHeadline firstEvent)
+				if (country != null)
 				{
-					_eventHeadlineViews[index].Load(firstEvent).Forget(Debug.LogException);
-					index += 1;
+					var featuredEvent = _eventSource[country].First();
+					eventView.Load(featuredEvent).Forget(Debug.LogException);
+				}
+				else
+				{
+					eventView.Hide();
 				}
 			}
+
+			// Debug.Log("focused: " + string.Join(", ", focusedCountries));
+			// Debug.Log("mapped: " + string.Join(", ", _eventViewMapper.MappedCountries));
 		}
 	}
 }

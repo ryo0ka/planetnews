@@ -13,18 +13,31 @@ namespace Planet.Views
 		[SerializeField]
 		ImageView _thumbnailView;
 
+		string _currentThumbnailUrl;
+
 		public async UniTask Load(IEventHeadline eventHeadline)
 		{
+			gameObject.SetActive(true);
+
 			_titleText.text = eventHeadline.Title;
 
 			if (eventHeadline.ThumbnailUrl is string url)
 			{
-				await _thumbnailView.LoadImage(url);
+				if (url != _currentThumbnailUrl)
+				{
+					_currentThumbnailUrl = url;
+					await _thumbnailView.LoadImage(url);
+				}
 			}
 			else
 			{
 				_thumbnailView.LoadDefaultImage();
 			}
+		}
+
+		public void Hide()
+		{
+			gameObject.SetActive(false);
 		}
 	}
 }
