@@ -22,7 +22,7 @@ namespace Zenject
             get { return enabled; }
         }
 
-        public virtual void Start()
+        protected virtual void OnEnable()
         {
             // Define this method so we expose the enabled check box
         }

@@ -3,7 +3,7 @@ using Zenject;
 
 namespace Planet.Data
 {
-	public class MonoDataInstaller : MonoInstaller
+	public sealed class AppController : MonoInstaller
 	{
 		public override void InstallBindings()
 		{
@@ -13,8 +13,11 @@ namespace Planet.Data
 			ErrorReceiverInstaller.Install(Container);
 			CountryGpsDictionaryInstaller.Install(Container);
 			EventSourceInstaller.Install(Container, disposables);
+		}
 
-			new RuntimeGarbageCleaner().AddTo(disposables).Initialize();
+		void Start()
+		{
+			new RuntimeGarbageCleaner().AddTo(this).Initialize();
 		}
 	}
 }

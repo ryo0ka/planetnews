@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Planet.CountryCodeToGps;
 using Planet.Data;
-using Planet.Models;
+using Sirenix.OdinInspector;
 using UniRx;
 using UniRx.Async;
 using UnityEngine;
@@ -22,12 +22,16 @@ namespace Planet.Views
 		[SerializeField]
 		CountryFocusObserver _countryFocusObserveer;
 
-		[SerializeField]
+		[SerializeField, DisableInPlayMode]
 		EventHeadlineView[] _eventHeadlineViews;
+
+		[SerializeField]
+		Material _lineMaterial;
 
 		CountryGpsDictionary _countryGpsDictionary;
 		IEventSource _eventSource;
 		Dictionary<string, MarkerView> _markers;
+		EventViewMapper _eventViewMapper;
 
 		[Inject]
 		public void Inject(CountryGpsDictionary countryGpsDictionary)
@@ -44,6 +48,7 @@ namespace Planet.Views
 		void Start()
 		{
 			_markers = new Dictionary<string, MarkerView>();
+			_eventViewMapper = new EventViewMapper(_eventHeadlineViews.Length);
 
 			_eventSource
 				.OnEventsAddedToCountry
@@ -55,6 +60,9 @@ namespace Planet.Views
 				.OnFocusedCountriesUpdated
 				.Subscribe(_ => OnFocusedCountriesUpdated())
 				.AddTo(this);
+
+			var postRenderObserver = Camera.main.gameObject.AddComponent<CameraPostRenderObserver>();
+			postRenderObserver.ObservePostRender.Subscribe(_ => OnCameraPostRender()).AddTo(this);
 		}
 
 		void OnEventSourceUpdated()
@@ -91,14 +99,50 @@ namespace Planet.Views
 				pair.Value.SetFocused(isFocused);
 			}
 
-			int index = 0;
-			foreach (var focusedCountry in _countryFocusObserveer.FocusedCountries)
+			var focusedCountries = _countryFocusObserveer.FocusedCountries;
+			
+			// TODO Do this in OnEventSourceUpdated()
+			focusedCountries = focusedCountries.Where(c => _eventSource[c].Any());
+
+			_eventViewMapper.UpdateMapping(focusedCountries);
+
+			var mappedCountries = _eventViewMapper.MappedCountries;
+			var mappedEventViews = mappedCountries.Zip(_eventHeadlineViews, (c, v) => (c, v));
+
+			foreach (var (country, eventView) in mappedEventViews)
 			{
-				if (_eventSource[focusedCountry].FirstOrDefault() is IEventHeadline firstEvent)
+				if (country != null)
 				{
-					_eventHeadlineViews[index].Load(firstEvent).Forget(Debug.LogException);
-					index += 1;
+					var featuredEvent = _eventSource[country].First();
+					eventView.Load(featuredEvent).Forget(Debug.LogException);
 				}
+				else
+				{
+					eventView.Hide();
+				}
+			}
+
+			// Debug.Log("focused: " + string.Join(", ", focusedCountries));
+			// Debug.Log("mapped: " + string.Join(", ", _eventViewMapper.MappedCountries));
+		}
+
+		void OnCameraPostRender()
+		{
+			var mappedCountries = _eventViewMapper.MappedCountries;
+			for (var i = 0; i < mappedCountries.Count; i++)
+			{
+				var mappedCountry = mappedCountries[i];
+				var mappedEventView = _eventHeadlineViews[i];
+				var mappedCountryMarker = _markers[mappedCountry];
+
+				var markerPosition = mappedCountryMarker.WorldPosition;
+				var viewPosition = mappedEventView.transform.position;
+
+				GL.Begin(GL.LINES);
+				_lineMaterial.SetPass(0);
+				GL.Vertex3(markerPosition.x, markerPosition.y, markerPosition.z);
+				GL.Vertex3(viewPosition.x, viewPosition.y, viewPosition.z);
+				GL.End();
 			}
 		}
 	}
