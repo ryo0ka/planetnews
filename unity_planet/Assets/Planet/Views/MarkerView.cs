@@ -15,6 +15,8 @@ namespace Planet.Views
 
 		readonly int ColorId = Shader.PropertyToID("_Color");
 
+		public Vector3 WorldPosition => _renderer.transform.position;
+
 		public void SetPosition(float latitude, float longitude)
 		{
 			_transformer.SetPosition(latitude, longitude);

@@ -25,6 +25,9 @@ namespace Planet.Views
 		[SerializeField, DisableInPlayMode]
 		EventHeadlineView[] _eventHeadlineViews;
 
+		[SerializeField]
+		Material _lineMaterial;
+
 		CountryGpsDictionary _countryGpsDictionary;
 		IEventSource _eventSource;
 		Dictionary<string, MarkerView> _markers;
@@ -57,6 +60,9 @@ namespace Planet.Views
 				.OnFocusedCountriesUpdated
 				.Subscribe(_ => OnFocusedCountriesUpdated())
 				.AddTo(this);
+
+			var postRenderObserver = Camera.main.gameObject.AddComponent<CameraPostRenderObserver>();
+			postRenderObserver.ObservePostRender.Subscribe(_ => OnCameraPostRender()).AddTo(this);
 		}
 
 		void OnEventSourceUpdated()
@@ -94,6 +100,8 @@ namespace Planet.Views
 			}
 
 			var focusedCountries = _countryFocusObserveer.FocusedCountries;
+			
+			// TODO Do this in OnEventSourceUpdated()
 			focusedCountries = focusedCountries.Where(c => _eventSource[c].Any());
 
 			_eventViewMapper.UpdateMapping(focusedCountries);
@@ -116,6 +124,26 @@ namespace Planet.Views
 
 			// Debug.Log("focused: " + string.Join(", ", focusedCountries));
 			// Debug.Log("mapped: " + string.Join(", ", _eventViewMapper.MappedCountries));
+		}
+
+		void OnCameraPostRender()
+		{
+			var mappedCountries = _eventViewMapper.MappedCountries;
+			for (var i = 0; i < mappedCountries.Count; i++)
+			{
+				var mappedCountry = mappedCountries[i];
+				var mappedEventView = _eventHeadlineViews[i];
+				var mappedCountryMarker = _markers[mappedCountry];
+
+				var markerPosition = mappedCountryMarker.WorldPosition;
+				var viewPosition = mappedEventView.transform.position;
+
+				GL.Begin(GL.LINES);
+				_lineMaterial.SetPass(0);
+				GL.Vertex3(markerPosition.x, markerPosition.y, markerPosition.z);
+				GL.Vertex3(viewPosition.x, viewPosition.y, viewPosition.z);
+				GL.End();
+			}
 		}
 	}
 }
