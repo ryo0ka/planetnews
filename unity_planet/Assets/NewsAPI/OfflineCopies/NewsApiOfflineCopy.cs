@@ -28,7 +28,7 @@ namespace NewsAPI.OfflineCopies
 
 		public void WriteSources(IEnumerable<NewsApiSource> sources)
 		{
-			var json = JsonConvert.SerializeObject(sources);
+			var json = JsonConvert.SerializeObject(sources, Formatting.Indented);
 			var path = SourceFilePath(_name);
 			Directory.CreateDirectory(_dirPath);
 			File.WriteAllText(path, json);

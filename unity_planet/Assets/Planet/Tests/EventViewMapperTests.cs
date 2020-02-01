@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Planet.Views;
 
-namespace Planet.Views.Tests
+namespace Planet.Tests
 {
 	public class EventViewMapperTests
 	{

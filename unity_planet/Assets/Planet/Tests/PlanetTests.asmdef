@@ -1,9 +1,10 @@
 ﻿{
-    "name": "PlanetViewTests",
+    "name": "PlanetTests",
     "optionalUnityReferences": [
         "TestAssemblies"
     ],
     "references": [
-        "Planet"
+        "Planet",
+        "NewsApi"
     ]
 }

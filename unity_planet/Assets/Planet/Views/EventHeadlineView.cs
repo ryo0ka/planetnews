@@ -8,6 +8,9 @@ namespace Planet.Views
 	public class EventHeadlineView : MonoBehaviour
 	{
 		[SerializeField]
+		TMP_Text _sourceText;
+
+		[SerializeField]
 		TMP_Text _titleText;
 
 		[SerializeField]
@@ -15,13 +18,14 @@ namespace Planet.Views
 
 		string _currentThumbnailUrl;
 
-		public async UniTask Load(IEventHeadline eventHeadline)
+		public async UniTask Load(IEvent ev)
 		{
 			gameObject.SetActive(true);
 
-			_titleText.text = eventHeadline.Title;
+			_sourceText.text = ev.Source;
+			_titleText.text = ev.Title;
 
-			if (eventHeadline.ThumbnailUrl is string url)
+			if (ev.ThumbnailUrl is string url)
 			{
 				if (url != _currentThumbnailUrl)
 				{

@@ -29,10 +29,10 @@ namespace Planet.Views
 		Material _lineMaterial;
 
 		CountryGpsDictionary _countryGpsDictionary;
-		IEventSource _eventSource;
+		IEventStreamer _eventStreamer;
 		Dictionary<string, MarkerView> _markers;
 		EventViewMapper _eventViewMapper;
-		ViewableEventsFilter _contentFilter;
+		ViewableEventProvider _viewableEvents;
 
 		[Inject]
 		public void Inject(CountryGpsDictionary countryGpsDictionary)
@@ -41,16 +41,16 @@ namespace Planet.Views
 		}
 
 		[Inject]
-		public void Inject(IEventSource eventSource)
+		public void Inject(IEventStreamer eventStreamer)
 		{
-			_eventSource = eventSource;
+			_eventStreamer = eventStreamer;
 		}
 
 		void Start()
 		{
 			_markers = new Dictionary<string, MarkerView>();
 			_eventViewMapper = new EventViewMapper(_eventHeadlineViews.Length);
-			_contentFilter = new ViewableEventsFilter();
+			_viewableEvents = new ViewableEventProvider();
 
 			_focusObserver
 				.OnFocusedCountriesUpdated
@@ -63,25 +63,25 @@ namespace Planet.Views
 				.Subscribe(_ => OnMainCameraPostRender())
 				.AddTo(this);
 
-			_eventSource.StartLoading();
-			OnEventsAdded();
+			_eventStreamer.StartStreaming();
+			OnEventsAdded(); //TODO Observe event streamer
 		}
 
 		void OnEventsAdded()
 		{
 			// Apply filter to newly loaded events
-			foreach (var country in _eventSource.Countries)
-			foreach (var ev in _eventSource.GetEvents(country))
+			foreach (var country in _eventStreamer.Countries)
+			foreach (var ev in _eventStreamer.GetEvents(country))
 			{
-				_contentFilter.AddEvent(country, ev);
+				_viewableEvents.AddEvent(country, ev);
 			}
 
-			// Enable focusing on filtered (=viewable) countries
-			_focusObserver.Initialize(_contentFilter.ViewableCountries);
+			// Enable focusing on viewable countries
+			_focusObserver.Initialize(_viewableEvents.ViewableCountries);
 
 			// Instantiate markers for all countries
 			// TODO Destroy existing markers
-			foreach (var country in _eventSource.Countries)
+			foreach (var country in _eventStreamer.Countries)
 			{
 				var latlong = _countryGpsDictionary[country];
 				var marker = Instantiate(_markerPrefab, _markerRoot);
@@ -114,15 +114,14 @@ namespace Planet.Views
 			var mappedEventViews = mappedCountries.Zip(_eventHeadlineViews, (c, v) => (c, v));
 			foreach (var (country, eventView) in mappedEventViews)
 			{
-				if (country != null)
+				if (country != null && 
+				    _viewableEvents.TryGetTopViewableEvent(country, out var ev))
 				{
-					var featuredEvent = _contentFilter.GetTopEvent(country);
-					eventView.Load(featuredEvent).Forget(Debug.LogException);
+					eventView.Load(ev).Forget(Debug.LogException);
+					continue;
 				}
-				else
-				{
-					eventView.Hide();
-				}
+
+				eventView.Hide();
 			}
 		}
 

@@ -11,10 +11,15 @@ namespace NewsAPI.OfflineCopies.Editor
 	{
 		string _fileName = "tmp";
 
-		[MenuItem("Tools/News API Offline Copy Window")]
+		[MenuItem("Window/News API Offline Copy Window")]
 		static void CreateWindow()
 		{
 			GetWindow<NewsApiOfflineCopyWindow>().Show();
+		}
+
+		void Awake()
+		{
+			titleContent = new GUIContent("News API Offline Copy Window");
 		}
 
 		void OnGUI()
