@@ -27,6 +27,14 @@ namespace Planet.Views
 
 		string _currentUrl;
 
+		public Material ImageMaterial => _image.materialForRendering;
+
+		void Awake()
+		{
+			// Clone the material so we can control each individual panel
+			_image.material = new Material(_image.material);
+		}
+
 		[Inject]
 		public void Inject(IImageLoader imageLoader)
 		{

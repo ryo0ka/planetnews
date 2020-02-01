@@ -6,6 +6,8 @@ Shader "UI/Event Panel Thumbnail"
     {
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
         _Color ("Tint", Color) = (1,1,1,1)
+        _Fade("Fade", Range(0, 1)) = 1
+        _FadeColor("Fade Color", Color) = (1,1,1,1)
 
         _StencilComp ("Stencil Comparison", Float) = 8
         _Stencil ("Stencil ID", Float) = 0
@@ -81,6 +83,8 @@ Shader "UI/Event Panel Thumbnail"
             fixed4 _TextureSampleAdd;
             float4 _ClipRect;
             float4 _MainTex_ST;
+            float _Fade;
+            fixed4 _FadeColor;
 
             v2f vert(appdata_t v)
             {
@@ -99,7 +103,9 @@ Shader "UI/Event Panel Thumbnail"
             fixed4 frag(v2f IN) : SV_Target
             {
                 half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
-                color.rgb *= saturate(IN.texcoord.y * 1);
+                color.rgb = lerp(color.rgb, _FadeColor.rgb, _Fade);
+                color.rgb *= saturate(IN.texcoord.y); // gradient
+
 
                 #ifdef UNITY_UI_CLIP_RECT
                 color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
