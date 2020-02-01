@@ -152,6 +152,8 @@ namespace Planet.Views
 			for (var i = 0; i < mappedCountries.Count; i++)
 			{
 				var mappedCountry = mappedCountries[i];
+				if (mappedCountry == null) continue;
+
 				var mappedEventView = _eventHeadlineViews[i];
 				var mappedCountryMarker = _markers[mappedCountry];
 
