@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Planet.Models;
 
@@ -6,7 +7,9 @@ namespace Planet.Data
 	public interface IEventStreamer
 	{
 		IEnumerable<string> Countries { get; }
-		IEnumerable<IEvent> GetEvents(string country);
+		IObservable<IEvent> OnEventAdded { get; }
+
+		bool TryGetEvents(string country, out IEnumerable<IEvent> events);
 
 		/// <summary>
 		/// Start loading the resource.

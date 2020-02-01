@@ -19,6 +19,7 @@ namespace Planet.Data
 
 		public bool TryMakeEvent(NewsApiArticle article, string country, out NewsApiEvent ev)
 		{
+			// No source ID -> Probably not very important publishers
 			var sourceId = article.Source.Id;
 			if (sourceId == null)
 			{
@@ -33,7 +34,14 @@ namespace Planet.Data
 				return false;
 			}
 
+			// No language specified -> Probably unintelligible to us
 			var language = source.Language;
+			if (language == null)
+			{
+				ev = null;
+				return false;
+			}
+
 			ev = new NewsApiEvent(_nextId++, article, country, language);
 			return true;
 		}

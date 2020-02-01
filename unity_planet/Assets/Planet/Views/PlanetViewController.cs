@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Planet.CountryCodeToGps;
 using Planet.Data;
+using Planet.Models;
+using Planet.Utils;
 using Sirenix.OdinInspector;
 using UniRx;
 using UniRx.Async;
@@ -32,7 +34,8 @@ namespace Planet.Views
 		IEventStreamer _eventStreamer;
 		Dictionary<string, MarkerView> _markers;
 		EventViewMapper _eventViewMapper;
-		ViewableEventProvider _viewableEvents;
+		ViewableEventFilter _viewableFilter;
+		List<string> _viewMapping;
 
 		[Inject]
 		public void Inject(CountryGpsDictionary countryGpsDictionary)
@@ -50,7 +53,8 @@ namespace Planet.Views
 		{
 			_markers = new Dictionary<string, MarkerView>();
 			_eventViewMapper = new EventViewMapper(_eventHeadlineViews.Length);
-			_viewableEvents = new ViewableEventProvider();
+			_viewableFilter = new ViewableEventFilter();
+			_viewMapping = new List<string>();
 
 			_focusObserver
 				.OnFocusedCountriesUpdated
@@ -63,25 +67,26 @@ namespace Planet.Views
 				.Subscribe(_ => OnMainCameraPostRender())
 				.AddTo(this);
 
+			_eventStreamer
+				.OnEventAdded
+				.Subscribe(e => OnEventAdded(e))
+				.AddTo(this);
+
 			_eventStreamer.StartStreaming();
-			OnEventsAdded(); //TODO Observe event streamer
 		}
 
-		void OnEventsAdded()
+		void OnEventAdded(IEvent ev)
 		{
-			// Apply filter to newly loaded events
-			foreach (var country in _eventStreamer.Countries)
-			foreach (var ev in _eventStreamer.GetEvents(country))
-			{
-				_viewableEvents.AddEvent(country, ev);
-			}
+			var country = ev.Country;
 
 			// Enable focusing on viewable countries
-			_focusObserver.Initialize(_viewableEvents.ViewableCountries);
+			if (_viewableFilter.Filter(ev))
+			{
+				_focusObserver.AddCountry(country);
+			}
 
-			// Instantiate markers for all countries
-			// TODO Destroy existing markers
-			foreach (var country in _eventStreamer.Countries)
+			// Instantiate markers for new countries
+			if (!_markers.ContainsKey(country))
 			{
 				var latlong = _countryGpsDictionary[country];
 				var marker = Instantiate(_markerPrefab, _markerRoot);
@@ -109,19 +114,34 @@ namespace Planet.Views
 			var focusedCountries = _focusObserver.FocusedCountries;
 			_eventViewMapper.UpdateMapping(focusedCountries);
 
-			// Update event views
-			var mappedCountries = _eventViewMapper.MappedCountries;
-			var mappedEventViews = mappedCountries.Zip(_eventHeadlineViews, (c, v) => (c, v));
+			var viewMapping = _eventViewMapper.MappedCountries;
+			if (!viewMapping.SequenceEqual(_viewMapping))
+			{
+				_viewMapping.Clear();
+				_viewMapping.AddRange(viewMapping);
+				OnMappingChanged();
+			}
+		}
+
+		void OnMappingChanged()
+		{
+			var mappedEventViews = _viewMapping.Zip(_eventHeadlineViews, (c, v) => (c, v));
 			foreach (var (country, eventView) in mappedEventViews)
 			{
-				if (country != null && 
-				    _viewableEvents.TryGetTopViewableEvent(country, out var ev))
+				if (country == null)
+				{
+					eventView.Hide();
+					continue;
+				}
+
+				if (_eventStreamer.TryGetEvents(country, out var events) &&
+				    events.TryFirst(e => _viewableFilter.Filter(e), out var ev))
 				{
 					eventView.Load(ev).Forget(Debug.LogException);
 					continue;
 				}
 
-				eventView.Hide();
+				Debug.LogError($"No viewable events in focused country: {country}");
 			}
 		}
 

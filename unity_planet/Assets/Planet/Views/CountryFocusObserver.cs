@@ -18,7 +18,7 @@ namespace Planet.Views
 		[SerializeField]
 		int _maxFocusedMarkerCount;
 
-		IEnumerable<string> _countries;
+		HashSet<string> _countries;
 		CountryGpsDictionary _countryGpsDictionary;
 		HashSet<string> _focusedCountries;
 		HashSet<string> _lastFocusedCountries;
@@ -38,6 +38,7 @@ namespace Planet.Views
 
 		void Awake()
 		{
+			_countries = new HashSet<string>();
 			_focusedCountries = new HashSet<string>();
 			_lastFocusedCountries = new HashSet<string>();
 			_updated = new Subject<Unit>().AddTo(this);
@@ -50,9 +51,9 @@ namespace Planet.Views
 			_countryGpsDictionary = countryGpsDictionary;
 		}
 
-		public void Initialize(IEnumerable<string> countries)
+		public void AddCountry(string country)
 		{
-			_countries = countries;
+			_countries.Add(country);
 		}
 
 		void Update()
