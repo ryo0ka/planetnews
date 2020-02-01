@@ -7,11 +7,13 @@ namespace Planet.CachedImageDownloaders
 {
 	public sealed class CachePathGenerator
 	{
+		readonly char[] _splitter = {'?'};
+
 		public CachePathGenerator(string subdirName)
 		{
 			DirPath = Path.Combine(Application.temporaryCachePath, subdirName);
 		}
-		
+
 		public string DirPath { get; }
 
 		// https://www.c-sharpcorner.com/article/compute-sha256-hash-in-c-sharp/
@@ -30,7 +32,7 @@ namespace Planet.CachedImageDownloaders
 					builder.Append(bytes[i].ToString("x2"));
 				}
 
-				return builder.ToString();
+				return builder.ToString().Substring(0, 10);
 			}
 		}
 
@@ -38,6 +40,12 @@ namespace Planet.CachedImageDownloaders
 		{
 			var hash = GenerateUrlHash(url);
 			var ext = Path.GetExtension(url);
+
+			if (ext.Contains("?"))
+			{
+				ext = ext.Split(_splitter)[0];
+			}
+
 			return Path.Combine(DirPath, $"{hash}{ext}");
 		}
 	}
