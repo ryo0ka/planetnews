@@ -6,10 +6,16 @@ namespace Planet.Utils
 {
 	public static class LinqUtils
 	{
-		public static bool TryFirst<T>(this IEnumerable<T> self, Func<T, bool> f, out T first)
+		public static bool TryLast<T>(this IEnumerable<T> self, Func<T, bool> f, out T last)
 		{
-			first = self.FirstOrDefault(f);
-			return first != null;
+			last = self.LastOrDefault(f);
+			return last != null;
+		}
+
+		public static bool TryLast<T>(this IEnumerable<T> self, out T last)
+		{
+			last = self.LastOrDefault();
+			return last != null;
 		}
 	}
 }

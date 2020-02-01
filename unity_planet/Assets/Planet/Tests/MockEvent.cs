@@ -1,10 +1,11 @@
+using System;
 using Planet.Models;
 
 namespace Planet.Tests
 {
 	public sealed class MockEvent : IEvent
 	{
-		public MockEvent(int id = 0, string source = "", string title = "", string thumbnailUrl = "", string language = "", string country = "")
+		public MockEvent(int id = 0, string source = "", string title = "", string thumbnailUrl = "", string language = "", string country = "", DateTime? publishedDate = null)
 		{
 			Id = id;
 			Source = source;
@@ -12,6 +13,7 @@ namespace Planet.Tests
 			ThumbnailUrl = thumbnailUrl;
 			Language = language;
 			Country = country;
+			PublishedDate = publishedDate;
 		}
 
 		public int Id { get; }
@@ -20,5 +22,6 @@ namespace Planet.Tests
 		public string ThumbnailUrl { get; }
 		public string Language { get; }
 		public string Country { get; }
+		public DateTime? PublishedDate { get; }
 	}
 }

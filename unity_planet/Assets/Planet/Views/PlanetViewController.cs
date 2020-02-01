@@ -79,12 +79,6 @@ namespace Planet.Views
 		{
 			var country = ev.Country;
 
-			// Enable focusing on viewable countries
-			if (_viewableFilter.Filter(ev))
-			{
-				_focusObserver.AddCountry(country);
-			}
-
 			// Instantiate markers for new countries
 			if (!_markers.ContainsKey(country))
 			{
@@ -96,6 +90,13 @@ namespace Planet.Views
 
 				_markers.Add(country, marker);
 			}
+
+			// Enable to focus on viewable countries
+			var events = _eventStreamer.GetEvents(country);
+			var viewable = _viewableFilter.Filter(events).Any();
+			//Debug.Log($"{events.Count()} {viewable}");
+			_markers[country].SetViewable(viewable);
+			_focusObserver.SetViewable(country, viewable);
 		}
 
 		void OnFocusChanged()
@@ -134,10 +135,11 @@ namespace Planet.Views
 					continue;
 				}
 
-				if (_eventStreamer.TryGetEvents(country, out var events) &&
-				    events.TryFirst(e => _viewableFilter.Filter(e), out var ev))
+				var events = _eventStreamer.GetEvents(country);
+				if (_viewableFilter.Filter(events).TryLast(out var ev))
 				{
 					eventView.Load(ev).Forget(Debug.LogException);
+					//Debug.Log(ev);
 					continue;
 				}
 
@@ -152,6 +154,8 @@ namespace Planet.Views
 			for (var i = 0; i < mappedCountries.Count; i++)
 			{
 				var mappedCountry = mappedCountries[i];
+				if (mappedCountry == null) continue;
+
 				var mappedEventView = _eventHeadlineViews[i];
 				var mappedCountryMarker = _markers[mappedCountry];
 

@@ -9,7 +9,11 @@ namespace Planet.Data
 		IEnumerable<string> Countries { get; }
 		IObservable<IEvent> OnEventAdded { get; }
 
-		bool TryGetEvents(string country, out IEnumerable<IEvent> events);
+		/// <summary>
+		/// Return all events in the country.
+		/// Return an empty list if not found.
+		/// </summary>
+		IEnumerable<IEvent> GetEvents(string country);
 
 		/// <summary>
 		/// Start loading the resource.

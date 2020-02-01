@@ -1,3 +1,4 @@
+using System;
 using NewsAPI.Models;
 
 namespace Planet.Models
@@ -23,6 +24,7 @@ namespace Planet.Models
 		public string ThumbnailUrl => _article.UrlToImage;
 		public string Language => _language;
 		public string Country => _country;
+		public DateTime? PublishedDate => _article.PublishedAt;
 
 		public override string ToString()
 		{

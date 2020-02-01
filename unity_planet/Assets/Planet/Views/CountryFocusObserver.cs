@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using Planet.CountryCodeToGps;
 using Planet.Data;
 using UniRx;
@@ -25,13 +24,6 @@ namespace Planet.Views
 		Camera _mainCamera;
 		Subject<Unit> _updated;
 
-		[UsedImplicitly] // for tests
-		public int MaxFocusedMarkerCount
-		{
-			get => _maxFocusedMarkerCount;
-			set => _maxFocusedMarkerCount = value;
-		}
-
 		public IObservable<Unit> OnFocusedCountriesUpdated => _updated;
 		public IEnumerable<string> FocusedCountries => _focusedCountries;
 		public bool IsFocused(string country) => _focusedCountries.Contains(country);
@@ -51,9 +43,16 @@ namespace Planet.Views
 			_countryGpsDictionary = countryGpsDictionary;
 		}
 
-		public void AddCountry(string country)
+		public void SetViewable(string country, bool viewable)
 		{
-			_countries.Add(country);
+			if (viewable)
+			{
+				_countries.Add(country);
+			}
+			else
+			{
+				_countries.Remove(country);
+			}
 		}
 
 		void Update()
