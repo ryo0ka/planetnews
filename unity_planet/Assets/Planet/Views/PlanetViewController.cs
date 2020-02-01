@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Planet.CountryCodeToGps;
 using Planet.Data;
 using Planet.Models;
 using Planet.Utils;
@@ -16,10 +15,7 @@ namespace Planet.Views
 	public class PlanetViewController : MonoBehaviour
 	{
 		[SerializeField]
-		Transform _markerRoot;
-
-		[SerializeField]
-		MarkerView _markerPrefab;
+		MarkerViewController _markers;
 
 		[SerializeField]
 		CountryFocusObserver _focusObserver;
@@ -30,18 +26,10 @@ namespace Planet.Views
 		[SerializeField]
 		Material _lineMaterial;
 
-		CountryGpsDictionary _countryGpsDictionary;
 		IEventStreamer _eventStreamer;
-		Dictionary<string, MarkerView> _markers;
 		EventViewMapper _eventViewMapper;
 		ViewableEventFilter _viewableFilter;
 		List<string> _viewMapping;
-
-		[Inject]
-		public void Inject(CountryGpsDictionary countryGpsDictionary)
-		{
-			_countryGpsDictionary = countryGpsDictionary;
-		}
 
 		[Inject]
 		public void Inject(IEventStreamer eventStreamer)
@@ -51,7 +39,6 @@ namespace Planet.Views
 
 		void Start()
 		{
-			_markers = new Dictionary<string, MarkerView>();
 			_eventViewMapper = new EventViewMapper(_eventHeadlineViews.Length);
 			_viewableFilter = new ViewableEventFilter();
 			_viewMapping = new List<string>();
@@ -80,35 +67,23 @@ namespace Planet.Views
 			var country = ev.Country;
 
 			// Instantiate markers for new countries
-			if (!_markers.ContainsKey(country))
-			{
-				var latlong = _countryGpsDictionary[country];
-				var marker = Instantiate(_markerPrefab, _markerRoot);
-				marker.name = $"Marker ({country})";
-				marker.SetPosition(latlong.Latitude, latlong.Longitude);
-				marker.SetFocused(false);
-
-				_markers.Add(country, marker);
-			}
+			_markers.AddMarker(country);
 
 			// Enable to focus on viewable countries
 			var events = _eventStreamer.GetEvents(country);
 			var viewable = _viewableFilter.Filter(events).Any();
 			//Debug.Log($"{events.Count()} {viewable}");
-			_markers[country].SetViewable(viewable);
+			_markers.SetMarkerViewable(country, viewable);
 			_focusObserver.SetViewable(country, viewable);
 		}
 
 		void OnFocusChanged()
 		{
 			// Apply focus state to marker views
-			foreach (var pair in _markers)
+			foreach (var country in _eventStreamer.Countries)
 			{
-				var country = pair.Key;
-				var markerView = pair.Value;
-
-				var isFocused = _focusObserver.IsFocused(country);
-				markerView.SetFocused(isFocused);
+				var focused = _focusObserver.IsFocused(country);
+				_markers.SetMarkerFocused(country, focused);
 			}
 
 			// Update event view mapping
@@ -157,11 +132,11 @@ namespace Planet.Views
 				if (mappedCountry == null) continue;
 
 				var mappedEventView = _eventHeadlineViews[i];
-				var mappedCountryMarker = _markers[mappedCountry];
+				_markers.TryGetMarkerWorldPosition(mappedCountry, out var mappedMarkerPositionn);
 
 				RenderGlLine(
 					_lineMaterial,
-					mappedCountryMarker.WorldPosition,
+					mappedMarkerPositionn,
 					mappedEventView.transform.position);
 			}
 		}
