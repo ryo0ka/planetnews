@@ -152,9 +152,9 @@ MonoBehaviour:
   _canvasRoot: {fileID: 59982824}
   _planetScaler: {fileID: 395097276}
   _planetCanvas: {fileID: 1919485759}
-  _leftPanel: {fileID: 1532158097}
+  _leftPanelCenter: {fileID: 1369942762}
   _leftPanelRoot: {fileID: 526716226}
-  _rightPanel: {fileID: 113239665}
+  _rightPanelCenter: {fileID: 1377498826}
   _rightPanelRoot: {fileID: 1320634484}
 --- !u!4 &59982824
 Transform:
@@ -164,7 +164,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 59982822}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalPosition: {x: -0.114, y: -0.02, z: 0.445}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1919485756}
@@ -295,6 +295,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1377498826}
   - {fileID: 914129185}
   - {fileID: 2104918064}
   - {fileID: 1861012057}
@@ -754,7 +755,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 395097274}
   m_LocalRotation: {x: -0, y: -0, z: 0.08715578, w: 0.9961947}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalPosition: {x: -0.114, y: -0.02, z: 0.445}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
   - {fileID: 1413708508}
@@ -1093,7 +1094,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526716225}
-  m_LocalRotation: {x: 0, y: -0.2047169, z: 0, w: 0.9788212}
+  m_LocalRotation: {x: 0.020112919, y: -0.45455357, z: 0.010267366, w: 0.8904331}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1322,7 +1323,7 @@ PrefabInstance:
     - target: {fileID: 2516991429482514283, guid: 1e4f28caa3aff46cca72e52c57c0d146,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2516991429482514283, guid: 1e4f28caa3aff46cca72e52c57c0d146,
         type: 3}
@@ -1696,7 +1697,7 @@ PrefabInstance:
     - target: {fileID: 2516991429482514283, guid: 1e4f28caa3aff46cca72e52c57c0d146,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2516991429482514283, guid: 1e4f28caa3aff46cca72e52c57c0d146,
         type: 3}
@@ -2022,7 +2023,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1320634483}
-  m_LocalRotation: {x: 0, y: 0.2047169, z: 0, w: 0.9788212}
+  m_LocalRotation: {x: 0.022124372, y: 0.20025517, z: -0.0045233206, w: 0.9794835}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2169,6 +2170,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1369942761}
   m_CullTransparentMesh: 0
+--- !u!1 &1377498825
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1377498826}
+  m_Layer: 0
+  m_Name: Panel Center
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1377498826
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377498825}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 113239665}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1413708507
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2731,7 +2767,7 @@ PrefabInstance:
     - target: {fileID: 2516991429482514283, guid: 1e4f28caa3aff46cca72e52c57c0d146,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2516991429482514283, guid: 1e4f28caa3aff46cca72e52c57c0d146,
         type: 3}
@@ -3193,7 +3229,7 @@ PrefabInstance:
     - target: {fileID: 2516991429482514283, guid: 1e4f28caa3aff46cca72e52c57c0d146,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2516991429482514283, guid: 1e4f28caa3aff46cca72e52c57c0d146,
         type: 3}
