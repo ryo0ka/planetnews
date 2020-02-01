@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Planet.Models;
 
@@ -6,9 +5,13 @@ namespace Planet.Data
 {
 	public interface IEventSource
 	{
-		IEnumerable<IEventDetailed> this[string country] { get; }
-		bool HasCountry(string country);
 		IEnumerable<string> Countries { get; }
-		IObservable<string> OnEventsAddedToCountry { get; }
+		IEnumerable<IEventHeadline> GetEvents(string country);
+
+		/// <summary>
+		/// Start loading the resource.
+		/// Don't do anything from the 2nd invocation.
+		/// </summary>
+		void StartLoading();
 	}
 }

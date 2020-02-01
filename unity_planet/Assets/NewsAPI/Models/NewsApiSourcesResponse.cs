@@ -16,7 +16,7 @@ namespace NewsAPI.Models
 		public string Message { get; private set; }
 
 		[JsonProperty("sources")]
-		public IEnumerable<NewsApiSourceDetail> Sources { get; private set; }
+		public IEnumerable<NewsApiSource> Sources { get; private set; }
 
 		[JsonConstructor]
 		NewsApiSourcesResponse()

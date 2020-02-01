@@ -739,14 +739,13 @@ MonoBehaviour:
   _markerRoot: {fileID: 1506820678}
   _markerPrefab: {fileID: 5571523771526809293, guid: 03b5bebf463694f7d9e75ff2307916c4,
     type: 3}
-  _countryFocusObserveer: {fileID: 395097278}
+  _focusObserver: {fileID: 395097278}
   _eventHeadlineViews:
   - {fileID: 843886456}
   - {fileID: 360622262}
   - {fileID: 1862864716}
   - {fileID: 946319030}
   _lineMaterial: {fileID: 2100000, guid: 5a77b25d9c2e748d5bc6d17fac78f3a4, type: 2}
-  _lineColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &395097276
 Transform:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ namespace Planet.Views
 		MarkerView _markerPrefab;
 
 		[SerializeField]
-		CountryFocusObserver _countryFocusObserveer;
+		CountryFocusObserver _focusObserver;
 
 		[SerializeField, DisableInPlayMode]
 		EventHeadlineView[] _eventHeadlineViews;
@@ -32,6 +32,7 @@ namespace Planet.Views
 		IEventSource _eventSource;
 		Dictionary<string, MarkerView> _markers;
 		EventViewMapper _eventViewMapper;
+		ViewableEventsFilter _contentFilter;
 
 		[Inject]
 		public void Inject(CountryGpsDictionary countryGpsDictionary)
@@ -49,33 +50,37 @@ namespace Planet.Views
 		{
 			_markers = new Dictionary<string, MarkerView>();
 			_eventViewMapper = new EventViewMapper(_eventHeadlineViews.Length);
+			_contentFilter = new ViewableEventsFilter();
 
-			_eventSource
-				.OnEventsAddedToCountry
-				.ThrottleFirstFrame(1)
-				.Subscribe(_ => OnEventSourceUpdated())
-				.AddTo(this);
-
-			_countryFocusObserveer
+			_focusObserver
 				.OnFocusedCountriesUpdated
-				.Subscribe(_ => OnFocusedCountriesUpdated())
+				.Subscribe(_ => OnFocusChanged())
 				.AddTo(this);
 
-			var postRenderObserver = Camera.main.gameObject.AddComponent<CameraPostRenderObserver>();
-			postRenderObserver.ObservePostRender.Subscribe(_ => OnCameraPostRender()).AddTo(this);
+			var postRender = Camera.main.gameObject.AddComponent<CameraPostRenderObserver>();
+			postRender
+				.ObservePostRender
+				.Subscribe(_ => OnMainCameraPostRender())
+				.AddTo(this);
+
+			_eventSource.StartLoading();
+			OnEventsAdded();
 		}
 
-		void OnEventSourceUpdated()
+		void OnEventsAdded()
 		{
-			_countryFocusObserveer.Initialize(_eventSource.Countries);
-
-			foreach (var existingMarker in _markers.Values)
+			// Apply filter to newly loaded events
+			foreach (var country in _eventSource.Countries)
+			foreach (var ev in _eventSource.GetEvents(country))
 			{
-				Destroy(existingMarker.gameObject);
+				_contentFilter.AddEvent(country, ev);
 			}
 
-			_markers.Clear();
+			// Enable focusing on filtered (=viewable) countries
+			_focusObserver.Initialize(_contentFilter.ViewableCountries);
 
+			// Instantiate markers for all countries
+			// TODO Destroy existing markers
 			foreach (var country in _eventSource.Countries)
 			{
 				var latlong = _countryGpsDictionary[country];
@@ -88,32 +93,30 @@ namespace Planet.Views
 			}
 		}
 
-		void OnFocusedCountriesUpdated()
+		void OnFocusChanged()
 		{
+			// Apply focus state to marker views
 			foreach (var pair in _markers)
 			{
 				var country = pair.Key;
-				var isFocused = _countryFocusObserveer.IsFocused(country);
+				var markerView = pair.Value;
 
-				// set marker view focused
-				pair.Value.SetFocused(isFocused);
+				var isFocused = _focusObserver.IsFocused(country);
+				markerView.SetFocused(isFocused);
 			}
 
-			var focusedCountries = _countryFocusObserveer.FocusedCountries;
-			
-			// TODO Do this in OnEventSourceUpdated()
-			focusedCountries = focusedCountries.Where(c => _eventSource[c].Any());
-
+			// Update event view mapping
+			var focusedCountries = _focusObserver.FocusedCountries;
 			_eventViewMapper.UpdateMapping(focusedCountries);
 
+			// Update event views
 			var mappedCountries = _eventViewMapper.MappedCountries;
 			var mappedEventViews = mappedCountries.Zip(_eventHeadlineViews, (c, v) => (c, v));
-
 			foreach (var (country, eventView) in mappedEventViews)
 			{
 				if (country != null)
 				{
-					var featuredEvent = _eventSource[country].First();
+					var featuredEvent = _contentFilter.GetTopEvent(country);
 					eventView.Load(featuredEvent).Forget(Debug.LogException);
 				}
 				else
@@ -121,13 +124,11 @@ namespace Planet.Views
 					eventView.Hide();
 				}
 			}
-
-			// Debug.Log("focused: " + string.Join(", ", focusedCountries));
-			// Debug.Log("mapped: " + string.Join(", ", _eventViewMapper.MappedCountries));
 		}
 
-		void OnCameraPostRender()
+		void OnMainCameraPostRender()
 		{
+			// Connect markers and event views with lines
 			var mappedCountries = _eventViewMapper.MappedCountries;
 			for (var i = 0; i < mappedCountries.Count; i++)
 			{
@@ -135,15 +136,20 @@ namespace Planet.Views
 				var mappedEventView = _eventHeadlineViews[i];
 				var mappedCountryMarker = _markers[mappedCountry];
 
-				var markerPosition = mappedCountryMarker.WorldPosition;
-				var viewPosition = mappedEventView.transform.position;
-
-				GL.Begin(GL.LINES);
-				_lineMaterial.SetPass(0);
-				GL.Vertex3(markerPosition.x, markerPosition.y, markerPosition.z);
-				GL.Vertex3(viewPosition.x, viewPosition.y, viewPosition.z);
-				GL.End();
+				RenderGlLine(
+					_lineMaterial,
+					mappedCountryMarker.WorldPosition,
+					mappedEventView.transform.position);
 			}
+		}
+
+		static void RenderGlLine(Material mat, Vector3 v1, Vector3 v2)
+		{
+			GL.Begin(GL.LINES);
+			mat.SetPass(0);
+			GL.Vertex3(v1.x, v1.y, v1.z);
+			GL.Vertex3(v2.x, v2.y, v2.z);
+			GL.End();
 		}
 	}
 }

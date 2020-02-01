@@ -1,0 +1,122 @@
+[
+  {
+    "source": {
+      "id": "the-verge",
+      "name": "The Verge"
+    },
+    "author": "Chaim Gartenberg",
+    "title": "Fast 9 takes place in an alternate reality where RED’s Hydrogen phone succeeded - The Verge",
+    "description": "The trailer for F9 is here, and it may have the most improbable thing to ever occur in the Fast and Furious franchise: RED’s Hydrogen One, which is used by multiple characters in the trailer.",
+    "url": "https://www.theverge.com/tldr/2020/1/31/21117444/fast-furious-9-red-hydrogen-one-phone-product-placement-trailer",
+    "urlToImage": "https://cdn.vox-cdn.com/thumbor/AuNg3VK5gIpiTFi3p_LtJxyXfnM=/878x188:2396x983/fit-in/1200x630/cdn.vox-cdn.com/uploads/chorus_asset/file/19662509/Screen_Shot_2020_01_31_at_4.22.36_PM.png",
+    "publishedAt": "2020-01-31T22:05:19Z"
+  },
+  {
+    "source": {
+      "id": "cnn",
+      "name": "CNN"
+    },
+    "author": "Maegan Vazquez and Kevin Liptak, CNN",
+    "title": "Nobody injured after SUV breaches Mar-a-Lago security - CNN",
+    "description": "Nobody was injured when authorities fired gunshots at a woman who breached two security checkpoints with her SUV on the outer perimeter of President Donald Trump's Mar-a-Lago retreat, the Palm Beach Sheriff's Office said.",
+    "url": "https://www.cnn.com/2020/01/31/politics/mar-a-lago-incident/index.html",
+    "urlToImage": "https://cdn.cnn.com/cnnnext/dam/assets/200131124010-03-mar-a-lago-incident-super-tease.jpg",
+    "publishedAt": "2020-01-31T22:05:00Z"
+  },
+  {
+    "source": {
+      "id": "fox-news",
+      "name": "Fox News"
+    },
+    "author": "Alexandria Hein",
+    "title": "Coronavirus declared public health emergency in US - Fox News",
+    "description": "Azar said that President Trump is also temporarily suspending entry into the U.S. for foreign nationals who pose a risk of transmitting the virus.",
+    "url": "https://www.foxnews.com/health/coronavirus-declared-public-health-emergency-in-us",
+    "urlToImage": "https://cf-images.us-east-1.prod.boltdns.net/v1/static/694940094001/28a42088-3fbc-4b1d-bc3d-93627b048d6a/16b77182-76ec-4f6c-a267-062d21b89656/1280x720/match/image.jpg",
+    "publishedAt": "2020-01-31T21:58:48Z"
+  },
+  {
+    "source": {
+      "id": null,
+      "name": "Abc7news.com"
+    },
+    "author": null,
+    "title": "Coronavirus: Bay Area's 1st case confirmed in Santa Clara County, CDC says - KGO-TV",
+    "description": "Santa Clara County health officials say the man who tested positive for coronavirus has been self-isolating since he returned from a trip to Wahun and Shanghai on Jan. 24 and has come into contact with few people since he's been home.",
+    "url": "https://abc7news.com/5895060",
+    "urlToImage": "https://cdn.abcotvs.com/dip/images/5891768_013020-cc-ap-coronavirus-illustration-img.jpg?w=1600",
+    "publishedAt": "2020-01-31T21:40:59Z"
+  },
+  {
+    "source": {
+      "id": "nbc-news",
+      "name": "NBC News"
+    },
+    "author": "Minyvonne Burke",
+    "title": "Missing Idaho kids: Grandmother calls mom a 'monster' for missing deadline to produce children - NBC News",
+    "description": "The grandmother of a 7-year-old boy in Idaho who along with his sister has been missing for months called their mother a \"monster\" for ignoring a court order to physically produce the children.",
+    "url": "https://www.nbcnews.com/news/us-news/missing-idaho-kids-grandmother-calls-mom-monster-missing-deadline-produce-n1127816",
+    "urlToImage": "https://media1.s-nbcnews.com/j/newscms/2020_05/3166721/191231-joshua-vallow-ryan-2x1-color-mn-1105_db30801873f55010af8ac61788388b69.nbcnews-fp-1200-630.jpg",
+    "publishedAt": "2020-01-31T21:20:00Z"
+  },
+  {
+    "source": {
+      "id": null,
+      "name": "Youtube.com"
+    },
+    "author": null,
+    "title": "FAST AND FURIOUS 9 Official Trailer (2020) Vin Diesel Movie HD - JoBlo Movie Trailers",
+    "description": "FAST AND FURIOUS 9 Official Trailer (2020) Vin Diesel Movie HD PLOT: The ninth installment of the 'Fast and Furious' franchise starring Vin Diesel, Michelle ...",
+    "url": "https://www.youtube.com/watch?v=8csc1BYUpUg",
+    "urlToImage": "https://i.ytimg.com/vi/8csc1BYUpUg/maxresdefault.jpg",
+    "publishedAt": "2020-01-31T21:17:52Z"
+  },
+  {
+    "source": {
+      "id": null,
+      "name": "Cbssports.com"
+    },
+    "author": "",
+    "title": "2020 Super Bowl: Watch Chiefs vs. 49ers with 4K live stream on Roku, Apple TV and other connected devices - CBS Sports",
+    "description": "Here's everything you need to know to catch the Big Game on Sunday",
+    "url": "https://www.cbssports.com/nfl/news/2020-super-bowl-watch-chiefs-vs-49ers-with-4k-live-stream-on-roku-apple-tv-and-other-connected-devices/",
+    "urlToImage": "https://sportshub.cbsistatic.com/i/r/2020/01/26/3846a419-b6ab-4704-94da-cf432213c2a7/thumbnail/1200x675/e1b104757cc80874d961ae34bafc41a7/super-bowl-liv.jpg",
+    "publishedAt": "2020-01-31T21:10:00Z"
+  },
+  {
+    "source": {
+      "id": null,
+      "name": "Nytimes.com"
+    },
+    "author": "Carl Zimmer",
+    "title": "Neanderthal Genes Hint at Much Earlier Human Migration From Africa - The New York Times",
+    "description": "Modern humans may have left the continent as long 200,000 years ago, a new analysis suggests.",
+    "url": "https://www.nytimes.com/2020/01/31/science/neanderthal-dna-africa.html",
+    "urlToImage": "https://static01.nyt.com/images/2020/02/04/science/30SCI-ZIMMER1/30SCI-ZIMMER1-facebookJumbo.jpg",
+    "publishedAt": "2020-01-31T21:06:00Z"
+  },
+  {
+    "source": {
+      "id": null,
+      "name": "Pagesix.com"
+    },
+    "author": "Alex Heigl",
+    "title": "Nikki Glaser apologizes for Taylor Swift comments in documentary - Page Six",
+    "description": "Glaser’s 365-word apology addresses a comment of hers included in a short montage in Swift’s “Miss Americana” documentary.",
+    "url": "https://pagesix.com/2020/01/31/nikki-glaser-apologizes-for-taylor-swift-comments-in-documentary/",
+    "urlToImage": "https://nyppagesix.files.wordpress.com/2020/01/nikki-glaser-taylor-swift.jpg?quality=90&strip=all&w=1200",
+    "publishedAt": "2020-01-31T20:54:00Z"
+  },
+  {
+    "source": {
+      "id": null,
+      "name": "Nytimes.com"
+    },
+    "author": "Zolan Kanno-Youngs",
+    "title": "Trump Administration Adds Six More Countries to Travel Ban - The New York Times",
+    "description": "President Trump adds Africa’s biggest country, Nigeria, as well as Myanmar, Eritrea, Kyrgyzstan, Sudan and Tanzania, to his restricted travel list.",
+    "url": "https://www.nytimes.com/2020/01/31/us/politics/trump-travel-ban.html",
+    "urlToImage": "https://static01.nyt.com/images/2020/01/31/us/politics/00dc-travelban-hfo-sub/00dc-travelban-hfo-sub-facebookJumbo-v2.jpg",
+    "publishedAt": "2020-01-31T20:50:00Z"
+  }
+]

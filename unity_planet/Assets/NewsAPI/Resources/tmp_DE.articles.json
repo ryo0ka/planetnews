@@ -1,0 +1,122 @@
+[
+  {
+    "source": {
+      "id": null,
+      "name": "Web.de"
+    },
+    "author": null,
+    "title": "Hertha trotz Einkaufstour nur 0:0 gegen Schalke - Nübel fehlerlos - WEB.DE News",
+    "description": "Herthas 23-Millionen-Neuzugang Krzysztof Piatek überzeugt bei seinem Debüt. Beim 0:0 gegen den FC Schalke 04 verpasst er knapp sein Tor-Debüt. Keeper Nübel gibt nach der Wechsel-Ankündigung zum FC Bayern sein mit Spannung erwartetes Comeback im Schalke-Tor.",
+    "url": "https://web.de/magazine/sport/fussball/bundesliga/hertha-trotz-einkaufstour-00-schalke-nuebel-fehlerlos-34393652",
+    "urlToImage": "https://i0.web.de/image/606/34393606,pd=3,f=opengraph/hertha-bsc-fc-schalke-04.jpg",
+    "publishedAt": "2020-01-31T21:51:00Z"
+  },
+  {
+    "source": {
+      "id": null,
+      "name": "Tagesschau.de"
+    },
+    "author": "tagesschau.de",
+    "title": "Rede zum Brexit: \"Moment der echten nationalen Erneuerung\" - tagesschau.de",
+    "description": "In einer Rede kurz vor dem EU-Austritt hat Großbritanniens Premier Johnson die Chancen betont, die der Brexit biete: Er sprach von einem \"Moment der Erneuerung und des Wandels\".",
+    "url": "https://www.tagesschau.de/ausland/brexit-johnson-rede-101.html",
+    "urlToImage": "https://www.tagesschau.de/multimedia/bilder/boris-johnson-191~_v-videowebm.jpg",
+    "publishedAt": "2020-01-31T21:40:00Z"
+  },
+  {
+    "source": {
+      "id": "bild",
+      "name": "Bild"
+    },
+    "author": "Christiane Hoffmann und Tobias Render",
+    "title": "Sarah Lombardi: Schwärmt sie für einen Fußballer? - BILD",
+    "description": "Wenn Sarah liebt und wen sie liebt – beides sind heiße Gesprächsstoffe unter ihren Fans. Und die haben zur Zeit einiges zu bequatschen.Denn: Sarah Lombardi (27, „I Miss You“) schwärmt laut BILD-Infos jetzt für ein Fußballer.Erfahren Sie mit BILDplus, um wen e…",
+    "url": "https://www.bild.de/bild-plus/unterhaltung/leute/leute/sarah-lombardi-schwaermt-sie-fuer-einen-fussballer-68525852.bild.html",
+    "urlToImage": "https://bilder.bild.de/fotos/sarah-lombardi-schwaermt-sie-fuer-einen-fussballer--200888422-68526276/Bild/5,club=bildplus.bild.jpg",
+    "publishedAt": "2020-01-31T21:33:17Z"
+  },
+  {
+    "source": {
+      "id": "bild",
+      "name": "Bild"
+    },
+    "author": "Bild.de",
+    "title": "DFB-Präsident Keller wurde der Wein-Keller ausgeräumt - BILD",
+    "description": "DFB-Präsident Fritz Keller wurde zum 2. Mal Opfer dreister Wein-Diebe. Die Täter plünderten das Sterne-Restaurant „Schwarzer Adler“.",
+    "url": "https://www.bild.de/sport/fussball/fussball/dfb-praesident-keller-wurde-der-wein-keller-ausgeraeumt-68527918.bild.html",
+    "urlToImage": "https://bilder.bild.de/fotos/dfb-praesident-keller-wurde-der-wein-keller-ausgeraeumt-201350033-68527996/Bild/1.bild.jpg",
+    "publishedAt": "2020-01-31T21:10:39Z"
+  },
+  {
+    "source": {
+      "id": "bild",
+      "name": "Bild"
+    },
+    "author": "SEBASTIAN KAYSER",
+    "title": "Alexander Zverev: Australien verliert 2,52 Mio an Spenden - BILD",
+    "description": "Großer Kampf – und doch verloren! Nach zwei Wochen war für Alexander Zverev (22) im Halbfinale der Australian Open Schluss.",
+    "url": "https://www.bild.de/sport/mehr-sport/tennis/alexander-zverev-australien-verliert-2-52-mio-an-spenden-68528370.bild.html",
+    "urlToImage": "https://bilder.bild.de/fotos/alexander-zverev-australien-verliert-2-52-mio-an-spenden-201350072-68528516/Bild/2.bild.jpg",
+    "publishedAt": "2020-01-31T21:10:15Z"
+  },
+  {
+    "source": {
+      "id": null,
+      "name": "Faz.net"
+    },
+    "author": "FAZ.NET",
+    "title": "„Hier spielt sich eine Tragödie ab“ - F.A.Z. - Frankfurter Allgemeine Zeitung",
+    "description": "Die Brexiteers feiern in London vor dem Parlament. Remainer ziehen in einem Trauermarsch durch die Stadt. Doch auch unter ihnen gibt es Optimisten.",
+    "url": "https://www.faz.net/aktuell/brexit/eu-befuerworter-betrauern-brexit-in-london-16611559.html",
+    "urlToImage": "https://media0.faz.net/ppmedia/aktuell/politik/1702546680/1.6611616/facebook_teaser/eu-befuerworter-am-freitag-in.jpg",
+    "publishedAt": "2020-01-31T20:56:00Z"
+  },
+  {
+    "source": {
+      "id": "spiegel-online",
+      "name": "Spiegel Online"
+    },
+    "author": "DER SPIEGEL",
+    "title": "Preis-Ärger: Edeka stoppt Bestellungen einiger Coca-Cola-Produkte - DER SPIEGEL",
+    "description": "Wer bei Edeka kleine Dosen Coca-Cola sucht, könnte in manchen Regionen Deutschlands enttäuscht werden. Beide Firmen streiten offenbar um die Preispolitik.",
+    "url": "https://www.spiegel.de/wirtschaft/unternehmen/edeka-und-coca-cola-im-streit-bestellungen-einiger-produkte-gestoppt-a-785c1d0a-b126-41b7-9d6b-981bb7ba99b7",
+    "urlToImage": "https://cdn.prod.www.spiegel.de/images/f12fbc89-0291-43aa-909b-8dcf4a78097c_w1280_r1.77_fpx50_fpy74.jpg",
+    "publishedAt": "2020-01-31T20:46:15Z"
+  },
+  {
+    "source": {
+      "id": null,
+      "name": "Sueddeutsche.de"
+    },
+    "author": "Johanna Bruckner",
+    "title": "Weinstein-Prozess - Zeugin schildert Erniedrigungen - Süddeutsche Zeitung",
+    "description": "Jessica Mann hatte im Vorfeld nie über ihre Anschuldigungen gegen Harvey Weinstein gesprochen. Bei ihrem ersten Auftritt im Zeugenstand geht sie gleich ins Detail.",
+    "url": "https://www.sueddeutsche.de/panorama/weinstein-prozess-jessica-mann-1.4780804",
+    "urlToImage": "https://www.sueddeutsche.de/image/sz.1.4780806/1200x675?v=1580503085",
+    "publishedAt": "2020-01-31T20:45:05Z"
+  },
+  {
+    "source": {
+      "id": null,
+      "name": "N-tv.de"
+    },
+    "author": "n-tv NACHRICHTEN",
+    "title": "Weltweit geächtete Kriegswaffe:US-Regierung erlaubt Landminen-Einsatz - n-tv NACHRICHTEN",
+    "description": "Eingegrabene Landminen töten und verletzten noch heute jedes Jahr Tausende Menschen in früheren Kriegsgebieten. Fast alle Staaten der Welt sind deshalb gegen Herstellung, Lagerung und Einsatz der grausamen Waffe. US- Präsident Trump sieht darin nur ein normal…",
+    "url": "https://www.n-tv.de/politik/US-Regierung-erlaubt-Landminen-Einsatz-article21548931.html",
+    "urlToImage": "https://bilder1.n-tv.de/img/incoming/crop21548936/430132451-cImg_16_9-w1200/imago95675972h.jpg",
+    "publishedAt": "2020-01-31T20:42:51Z"
+  },
+  {
+    "source": {
+      "id": null,
+      "name": "Derwesten.de"
+    },
+    "author": "Redaktion",
+    "title": "Coronavirus in Deutschland: Erstes Kind in Deutschland infiziert ++ Gesundheitsnotstand ausgerufen - Der Westen",
+    "description": "Coronavirus ist in Deutschland angekommen. Drei weitere Fälle haben sich in Bayern bestätigt. Jetzt hat die Lufthansa Konsequenzen gezogen und alle Flüge nach China gestrichen. Alle Entwicklungen hier im Live-Blog.",
+    "url": "https://www.derwesten.de/panorama/vermischtes/coronavirus-deutschland-bayern-symptome-was-ist-das-news-uebertragung-gefahr-id228262539.html",
+    "urlToImage": "https://img.derwesten.de/img/vermischtes/crop228292443/6482609275-w820-cv16_9-q85/coronavirus-2-.jpg",
+    "publishedAt": "2020-01-31T20:14:58Z"
+  }
+]

@@ -30,6 +30,13 @@ namespace NewsAPI
 
 		public bool LogJsonResponses { get; set; }
 
+		public static NewsApiClient FromResource()
+		{
+			const string ApiKeyFileName = "GitIgnore/NewsApiKey";
+			var keyFile = Resources.Load<TextAsset>(ApiKeyFileName);
+			return new NewsApiClient(keyFile.text);
+		}
+
 		/// <summary>
 		/// Query the /v2/top-headlines endpoint for live top news headlines.
 		/// </summary>

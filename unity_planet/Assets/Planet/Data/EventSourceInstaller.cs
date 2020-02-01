@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Planet.OfflineNewsSources;
+using NewsAPI.OfflineCopies;
 using UniRx;
 using Zenject;
 
@@ -13,8 +13,8 @@ namespace Planet.Data
 
 		public override void InstallBindings()
 		{
-			var offlineSource = OfflineNewsSourceReader.FromResource();
-			var source = new OfflineEventSource(offlineSource).AddTo(_disposables);
+			var newsApiOfflineCopy = NewsApiOfflineCopy.FromResources("tmp");
+			var source = new OfflineEventSource(newsApiOfflineCopy).AddTo(_disposables);
 			Container.Bind<IEventSource>().FromInstance(source);
 		}
 	}
