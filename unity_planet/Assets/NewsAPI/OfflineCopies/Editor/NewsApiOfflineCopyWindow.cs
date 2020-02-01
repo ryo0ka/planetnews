@@ -55,7 +55,7 @@ namespace NewsAPI.OfflineCopies.Editor
 
 			if (GUILayout.Button("Open Folder"))
 			{
-				EditorUtility.RevealInFinder(NewsApiOfflineCopy.ResourceFilePath);
+				EditorUtility.RevealInFinder(NewsApiOfflineCopyWriter.ResourceFilePath);
 			}
 		}
 
@@ -67,7 +67,7 @@ namespace NewsAPI.OfflineCopies.Editor
 			if (CatchError(response)) return;
 
 			var sources = response.Sources;
-			var io = NewsApiOfflineCopy.FromResources(_fileName);
+			var io = new NewsApiOfflineCopyWriter(_fileName);
 			io.WriteSources(sources);
 			AssetDatabase.Refresh();
 
@@ -88,9 +88,8 @@ namespace NewsAPI.OfflineCopies.Editor
 			if (CatchError(response)) return;
 
 			var articles = response.Articles;
-			var io = NewsApiOfflineCopy.FromResources(_fileName);
+			var io = new NewsApiOfflineCopyWriter(_fileName);
 			io.WriteArticles("ustop", articles);
-			AssetDatabase.Refresh();
 
 			Debug.Log("Finished downloading");
 		}
@@ -113,13 +112,11 @@ namespace NewsAPI.OfflineCopies.Editor
 				if (CatchError(response)) return;
 
 				var articles = response.Articles;
-				var io = NewsApiOfflineCopy.FromResources(_fileName);
+				var io = new NewsApiOfflineCopyWriter(_fileName);
 				io.WriteArticles(country.ToString(), articles);
 
 				Debug.Log($"Finished downloading {country}");
 			}
-
-			AssetDatabase.Refresh();
 
 			Debug.Log("Finished downloading");
 		}

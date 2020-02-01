@@ -1,24 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using NewsAPI.Models;
-using NewsAPI.OfflineCopies;
+using Newtonsoft.Json;
 using NUnit.Framework;
-using UnityEngine;
 
 namespace NewsAPI.Tests
 {
 	public class NewsApiOfflineCopyTest
 	{
-		const string SubdirPath = "foo";
-		string _dirPath;
-
-		[SetUp]
-		public void SetUp()
-		{
-			_dirPath = Path.Combine(Application.temporaryCachePath, SubdirPath);
-		}
-
 		[Test]
 		public void WriteAndReadSources()
 		{
@@ -29,9 +18,9 @@ namespace NewsAPI.Tests
 				new NewsApiSource("3", "name 3", "desc 3", "url 3", "category 3", "language 3", "country 3"),
 			};
 
-			var io = new NewsApiOfflineCopy(_dirPath, "tmp");
-			io.WriteSources(sources1);
-			var sources2 = io.ReadSources();
+			var sources2 =
+				JsonConvert.DeserializeObject<List<NewsApiSource>>(
+					JsonConvert.SerializeObject(sources1));
 
 			CollectionAssert.AreEqual(sources1, sources2);
 		}
@@ -46,10 +35,9 @@ namespace NewsAPI.Tests
 				new NewsApiArticle(new NewsApiSourceShort("id 3", "name 3"), "author 3", "title 3", "desc 3", "url 3", "image 3", DateTime.Now),
 			};
 
-			var io = new NewsApiOfflineCopy(_dirPath, "tmp");
-			var postfix = "bar";
-			io.WriteArticles(postfix, articles1);
-			var articles2 = io.ReadArticles(postfix);
+			var articles2 =
+				JsonConvert.DeserializeObject<List<NewsApiArticle>>(
+					JsonConvert.SerializeObject(articles1));
 
 			CollectionAssert.AreEqual(articles1, articles2);
 		}

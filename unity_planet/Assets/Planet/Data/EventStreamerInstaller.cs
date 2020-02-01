@@ -14,7 +14,7 @@ namespace Planet.Data
 
 		public override void InstallBindings()
 		{
-			var io = NewsApiOfflineCopy.FromResources("tmp");
+			var io = new NewsApiOfflineCopy("tmp");
 			var factory = new NewsApiEventFactory(io.ReadSources());
 			var source = new NewsApiEventStreamer(factory).AddTo(_disposables);
 			var countries = (NewsApiCountry[]) Enum.GetValues(typeof(NewsApiCountry));
