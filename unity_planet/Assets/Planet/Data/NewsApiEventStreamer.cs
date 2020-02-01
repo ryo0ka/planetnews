@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NewsAPI.Models;
 using Planet.Models;
 using UniRx;
@@ -24,16 +25,14 @@ namespace Planet.Data
 		public IEnumerable<string> Countries => _events.Keys;
 		public IObservable<IEvent> OnEventAdded => _onEventAdded;
 
-		public bool TryGetEvents(string country, out IEnumerable<IEvent> events)
+		public IEnumerable<IEvent> GetEvents(string country)
 		{
-			if (_events.TryGetValue(country, out var eventList))
+			if (_events.TryGetValue(country, out var events))
 			{
-				events = eventList;
-				return true;
+				return events;
 			}
 
-			events = null;
-			return false;
+			return Enumerable.Empty<IEvent>();
 		}
 
 		public void SetArticles(string country, IEnumerable<NewsApiArticle> articles)
@@ -48,18 +47,15 @@ namespace Planet.Data
 				if (!_events.TryGetValue(country, out var events))
 				{
 					events = new List<IEvent>();
+					_events[country] = events;
 				}
 
 				foreach (var article in articles)
 				{
-					if (_eventFactory.TryMakeEvent(article, country, out var ev))
-					{
-						events.Add(ev);
-						_onEventAdded.OnNext(ev);
-					}
+					var ev = _eventFactory.MakeEvent(article, country);
+					events.Add(ev);
+					_onEventAdded.OnNext(ev);
 				}
-
-				_events[country] = events;
 			}
 		}
 

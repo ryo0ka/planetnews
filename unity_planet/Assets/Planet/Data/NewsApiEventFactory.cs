@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NewsAPI.Models;
 using Planet.Models;
-using UnityEngine;
 
 namespace Planet.Data
 {
@@ -17,33 +16,12 @@ namespace Planet.Data
 			_nextId = 0;
 		}
 
-		public bool TryMakeEvent(NewsApiArticle article, string country, out NewsApiEvent ev)
+		public NewsApiEvent MakeEvent(NewsApiArticle article, string country)
 		{
-			// No source ID -> Probably not very important publishers
 			var sourceId = article.Source.Id;
-			if (sourceId == null)
-			{
-				ev = null;
-				return false;
-			}
-
-			if (!_sources.TryGetValue(sourceId, out var source))
-			{
-				Debug.Log($"Source not found with ID: {sourceId}");
-				ev = null;
-				return false;
-			}
-
-			// No language specified -> Probably unintelligible to us
-			var language = source.Language;
-			if (language == null)
-			{
-				ev = null;
-				return false;
-			}
-
-			ev = new NewsApiEvent(_nextId++, article, country, language);
-			return true;
+			_sources.TryGetValue(sourceId ?? "", out var source);
+			var language = source?.Language;
+			return new NewsApiEvent(_nextId++, article, country, language);
 		}
 	}
 }

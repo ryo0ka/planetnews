@@ -1,3 +1,5 @@
+using System;
+
 namespace Planet.Models
 {
 	public interface IEvent
@@ -8,5 +10,6 @@ namespace Planet.Models
 		string ThumbnailUrl { get; }
 		string Language { get; }
 		string Country { get; }
+		DateTime? PublishedDate { get; }
 	}
 }

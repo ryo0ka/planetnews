@@ -1,9 +1,6 @@
-﻿using System.Text.RegularExpressions;
-using NewsAPI.Models;
+﻿using NewsAPI.Models;
 using NUnit.Framework;
 using Planet.Data;
-using UnityEngine;
-using UnityEngine.TestTools;
 
 namespace Planet.Tests
 {
@@ -19,8 +16,8 @@ namespace Planet.Tests
 
 			var article1 = new NewsApiArticle(new NewsApiSourceShort("", "source A"), "", "", "", "", "", null);
 			var article2 = new NewsApiArticle(new NewsApiSourceShort("", "source A"), "", "", "", "", "", null);
-			factory.TryMakeEvent(article1, "", out var event1);
-			factory.TryMakeEvent(article2, "", out var event2);
+			var event1 = factory.MakeEvent(article1, "");
+			var event2 = factory.MakeEvent(article2, "");
 			Assert.AreEqual(0, event1.Id);
 			Assert.AreEqual(1, event2.Id);
 		}
@@ -30,28 +27,40 @@ namespace Planet.Tests
 		{
 			var factory = new NewsApiEventFactory(new[]
 			{
-				new NewsApiSource("", "source A", "", "", "", "lang A", ""),
-				new NewsApiSource("", "source B", "", "", "", "lang B", ""),
-				new NewsApiSource("", "source C", "", "", "", "lang C", ""),
+				new NewsApiSource("source A", "", "", "", "", "lang A", ""),
+				new NewsApiSource("source B", "", "", "", "", "lang B", ""),
+				new NewsApiSource("source C", "", "", "", "", "lang C", ""),
 			});
 
-			var article1 = new NewsApiArticle(new NewsApiSourceShort("", "source B"), "", "", "", "", "", null);
-			factory.TryMakeEvent(article1, "", out var event1);
+			var article1 = new NewsApiArticle(new NewsApiSourceShort("source B", ""), "", "", "", "", "", null);
+			var event1 = factory.MakeEvent(article1, "");
 			Assert.AreEqual("lang B", event1.Language);
 		}
 
 		[Test]
-		public void FailArticlesWithoutSource()
+		public void AttachNullLanguage()
 		{
 			var factory = new NewsApiEventFactory(new[]
 			{
-				new NewsApiSource("source A", "", "", "", "", "", ""),
+				new NewsApiSource("source A", "", "", "", "", null, ""),
+			});
+
+			var article1 = new NewsApiArticle(new NewsApiSourceShort("source A", ""), "", "", "", "", "", null);
+			var event1 = factory.MakeEvent(article1, "");
+			Assert.AreEqual(null, event1.Language);
+		}
+
+		[Test]
+		public void AttachNullSource()
+		{
+			var factory = new NewsApiEventFactory(new[]
+			{
+				new NewsApiSource("source A", "", "", "", "", "lang A", ""),
 			});
 
 			var article1 = new NewsApiArticle(new NewsApiSourceShort("source B", ""), "", "", "", "", "", null);
-			factory.TryMakeEvent(article1, "", out var event1);
-			LogAssert.Expect(LogType.Log, new Regex("^Source not found"));
-			Assert.IsNull(event1);
+			var event1 = factory.MakeEvent(article1, "");
+			Assert.AreEqual(null, event1.Language);
 		}
 	}
 }
