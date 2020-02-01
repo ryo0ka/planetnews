@@ -1,7 +1,8 @@
+using Planet.Data;
 using UniRx;
 using Zenject;
 
-namespace Planet.Data
+namespace Planet
 {
 	public sealed class AppController : MonoInstaller
 	{
