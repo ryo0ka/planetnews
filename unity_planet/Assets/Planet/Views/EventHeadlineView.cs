@@ -1,17 +1,17 @@
 using Planet.Models;
-using TMPro;
 using UniRx.Async;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Planet.Views
 {
 	public class EventHeadlineView : MonoBehaviour
 	{
 		[SerializeField]
-		TMP_Text _sourceText;
+		Text _sourceText;
 
 		[SerializeField]
-		TMP_Text _titleText;
+		Text _titleText;
 
 		[SerializeField]
 		ImageView _thumbnailView;
@@ -22,7 +22,8 @@ namespace Planet.Views
 		{
 			gameObject.SetActive(true);
 
-			_sourceText.text = ev.Source;
+			var date = ev.PublishedDate == null ? "" : $"{ev.PublishedDate:MM/dd/yyyy}";
+			_sourceText.text = $"{ev.Source} {date}";
 			_titleText.text = ev.Title;
 
 			if (ev.ThumbnailUrl is string url)
