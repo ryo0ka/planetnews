@@ -1,0 +1,10 @@
+﻿{
+    "name": "PlanetTests",
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "references": [
+        "Planet",
+        "NewsApi"
+    ]
+}

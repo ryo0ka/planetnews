@@ -1,9 +1,0 @@
-﻿{
-    "name": "PlanetViewTests",
-    "optionalUnityReferences": [
-        "TestAssemblies"
-    ],
-    "references": [
-        "Planet"
-    ]
-}

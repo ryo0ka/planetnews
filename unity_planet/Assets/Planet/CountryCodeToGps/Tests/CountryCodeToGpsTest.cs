@@ -10,7 +10,7 @@ namespace Planet.CountryCodeToGps.Tests
 		public void CountryCodePresence()
 		{
 			var dictionary = CountryGpsFactory.FromResource();
-			var countryCodes = (Countries[]) Enum.GetValues(typeof(Countries));
+			var countryCodes = (NewsApiCountry[]) Enum.GetValues(typeof(NewsApiCountry));
 			foreach (var countryCode in countryCodes)
 			{
 				var latLong = dictionary[countryCode.ToString()];
