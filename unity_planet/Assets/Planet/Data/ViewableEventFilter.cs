@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Planet.Models;
@@ -7,9 +8,20 @@ namespace Planet.Data
 {
 	public sealed class ViewableEventFilter
 	{
-		public bool Filter(IEvent ev)
+		readonly List<Func<IEvent, bool>> _filters;
+
+		public ViewableEventFilter()
 		{
-			return ev.Language?.ToLower() == "en";
+			_filters = new List<Func<IEvent, bool>>
+			{
+				e => e.Language?.ToLower() == "en",
+				e => !string.IsNullOrEmpty(e.ThumbnailUrl),
+			};
+		}
+
+		bool Filter(IEvent ev)
+		{
+			return _filters.All(f => f(ev));
 		}
 
 		public IEnumerable<IEvent> Filter(IEnumerable<IEvent> events)

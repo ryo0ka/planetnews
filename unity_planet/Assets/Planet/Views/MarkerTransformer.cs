@@ -1,4 +1,7 @@
-using Planet.Data;
+using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
+using Planet.Utils;
 using UnityEngine;
 
 namespace Planet.Views
@@ -9,7 +12,10 @@ namespace Planet.Views
 		Transform _markerRoot;
 
 		[SerializeField]
-		Transform _marker;
+		Transform _mover;
+
+		[SerializeField]
+		Transform _scaler;
 
 		[SerializeField]
 		float _latitude;
@@ -22,10 +28,12 @@ namespace Planet.Views
 
 		const float PlanetRadius = 0.5f;
 
+		public float Scale => _scaler.localScale.x;
+
 		void Reset()
 		{
 			_markerRoot = transform;
-			_marker = _markerRoot.GetChild(0);
+			_mover = _markerRoot.GetChild(0);
 		}
 
 		void OnValidate()
@@ -36,7 +44,7 @@ namespace Planet.Views
 		void UpdatePosition()
 		{
 			_markerRoot.localRotation = PlanetMath.GpsToSpherical(_latitude, _longitude);
-			_marker.localPosition = new Vector3(
+			_mover.localPosition = new Vector3(
 				0, 0, PlanetRadius + _heightOffset);
 		}
 
@@ -48,10 +56,17 @@ namespace Planet.Views
 			UpdatePosition();
 		}
 
-		public void SetHeightOffset(float offset)
+		public void SetScale(float scale)
 		{
-			_heightOffset = offset;
-			UpdatePosition();
+			_scaler.localScale = Vector3.one * scale;
+		}
+	}
+
+	static class MarkerTransformerUtils
+	{
+		public static TweenerCore<float, float, FloatOptions> DoScale(this MarkerTransformer self, float scale, float duration)
+		{
+			return DOTween.To(() => self.Scale, s => self.SetScale(s), scale, duration);
 		}
 	}
 }
