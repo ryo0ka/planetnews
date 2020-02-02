@@ -56,6 +56,9 @@ namespace Planet.Views
 			{
 				var texture = await _imageLoader.LoadImage(url);
 
+				// cancel if the scene has been unloaded
+				if (!this || !_image || !_imageFitter) return;
+
 				// skipped
 				if (_currentUrl != url)
 				{
