@@ -23,5 +23,14 @@ namespace Planet.Utils
 		{
 			return self + (target - self).OfMagnitude(distance);
 		}
+
+		public static void SetLocalEulerAngle(this Transform self, float? x = null, float? y = null, float? z = null)
+		{
+			var n = self.localEulerAngles;
+			n.x = x ?? n.x;
+			n.y = y ?? n.y;
+			n.z = z ?? n.z;
+			self.localEulerAngles = n;
+		}
 	}
 }

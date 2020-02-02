@@ -71,6 +71,7 @@ namespace Planet.Views
 			panelRoot.LookAt(_mainCameraTransform, Vector3.up);
 			panelRoot.Rotate(0, 180, 0, Space.Self);
 			panelRoot.Rotate(0, odlr, 0, Space.World);
+			panelRoot.SetLocalEulerAngle(z: 0);
 
 			// Apply margin
 			var sizeDelta = panelRoot.sizeDelta;
