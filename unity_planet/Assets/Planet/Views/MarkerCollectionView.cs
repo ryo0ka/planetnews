@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Planet.Views
 {
-	public sealed class MarkerViewController : MonoBehaviour
+	public sealed class MarkerCollectionView : MonoBehaviour
 	{
 		[SerializeField]
 		Transform _markerRoot;
@@ -62,16 +62,9 @@ namespace Planet.Views
 			marker.SetFocused(focused);
 		}
 
-		public bool TryGetMarkerWorldPosition(string country, out Vector3 worldPosition)
+		public Transform GetAnchor(string country)
 		{
-			if (!_markers.TryGetValue(country, out var marker))
-			{
-				worldPosition = default;
-				return false;
-			}
-
-			worldPosition = marker.WorldPosition;
-			return true;
+			return _markers[country].Anchor;
 		}
 	}
 }

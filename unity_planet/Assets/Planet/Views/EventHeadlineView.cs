@@ -17,6 +17,9 @@ namespace Planet.Views
 		[SerializeField]
 		ImageView _thumbnailView;
 
+		[SerializeField]
+		float _duration;
+
 		string _currentThumbnailUrl;
 		readonly int _fadeId = Shader.PropertyToID("_Fade");
 
@@ -47,7 +50,7 @@ namespace Planet.Views
 		void RunUnfadeEffect()
 		{
 			_thumbnailView.ImageMaterial.SetFloat(_fadeId, 1f);
-			_thumbnailView.ImageMaterial.DOFloat(0f, _fadeId, 0.25f).SetEase(Ease.OutSine);
+			_thumbnailView.ImageMaterial.DOFloat(0f, _fadeId, _duration).SetEase(Ease.OutSine);
 		}
 
 		public void Hide()

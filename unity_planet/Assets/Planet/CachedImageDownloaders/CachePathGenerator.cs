@@ -7,8 +7,6 @@ namespace Planet.CachedImageDownloaders
 {
 	public sealed class CachePathGenerator
 	{
-		readonly char[] _splitter = {'?'};
-
 		public CachePathGenerator(string subdirName)
 		{
 			DirPath = Path.Combine(Application.temporaryCachePath, subdirName);
@@ -39,14 +37,7 @@ namespace Planet.CachedImageDownloaders
 		public string GenerateCachePath(string url)
 		{
 			var hash = GenerateUrlHash(url);
-			var ext = Path.GetExtension(url);
-
-			if (ext.Contains("?"))
-			{
-				ext = ext.Split(_splitter)[0];
-			}
-
-			return Path.Combine(DirPath, $"{hash}{ext}");
+			return Path.Combine(DirPath, $"{hash}.imagecache");
 		}
 	}
 }

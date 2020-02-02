@@ -26,6 +26,7 @@ Shader "Unlit/Line"
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float4 color : COLOR;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -33,6 +34,7 @@ Shader "Unlit/Line"
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
+                float4 color : COLOR;
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
@@ -43,6 +45,7 @@ Shader "Unlit/Line"
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
+                o.color = v.color;
                 return o;
             }
             
@@ -50,7 +53,7 @@ Shader "Unlit/Line"
             
             fixed4 frag (v2f i) : SV_Target
             {
-                return _Color;
+                return i.color * _Color;
             }
             ENDCG
         }

@@ -172,6 +172,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+  _duration: 0.35
 --- !u!1 &4897869760568383176
 GameObject:
   m_ObjectHideFlags: 0
