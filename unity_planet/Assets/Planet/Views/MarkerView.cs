@@ -17,7 +17,7 @@ namespace Planet.Views
 		readonly int _colorId = Shader.PropertyToID("_Color");
 		bool _isFocused, _isViewable;
 
-		public Vector3 WorldPosition => _renderer.transform.position;
+		public Transform Anchor => _transformer.Anchor;
 
 		public void SetPosition(float latitude, float longitude)
 		{

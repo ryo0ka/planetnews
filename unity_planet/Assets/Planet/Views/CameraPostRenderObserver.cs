@@ -21,4 +21,17 @@ namespace Planet.Views
 			_onPostRender.OnNext(Unit.Default);
 		}
 	}
+
+	public static class CameraPostRenderObserverUtils
+	{
+		public static IObservable<Unit> OnPostRenderAsObservable(this Component self)
+		{
+			if (!self.TryGetComponent<CameraPostRenderObserver>(out var observer))
+			{
+				observer = self.gameObject.AddComponent<CameraPostRenderObserver>();
+			}
+
+			return observer.ObservePostRender;
+		}
+	}
 }

@@ -15,16 +15,16 @@ namespace Planet.Views
 	public class PlanetViewController : MonoBehaviour
 	{
 		[SerializeField]
-		MarkerViewController _markers;
+		MarkerCollectionView _markers;
+
+		[SerializeField]
+		LineCollectionView _lines;
 
 		[SerializeField]
 		CountryFocusObserver _focusObserver;
 
 		[SerializeField, DisableInPlayMode]
-		EventHeadlineView[] _eventHeadlineViews;
-
-		[SerializeField]
-		Material _lineMaterial;
+		EventHeadlineView[] _eventViews;
 
 		IEventStreamer _eventStreamer;
 		EventViewMapper _eventViewMapper;
@@ -39,19 +39,13 @@ namespace Planet.Views
 
 		void Start()
 		{
-			_eventViewMapper = new EventViewMapper(_eventHeadlineViews.Length);
+			_eventViewMapper = new EventViewMapper(_eventViews.Length);
 			_viewableFilter = new ViewableEventFilter();
 			_viewMapping = new List<string>();
 
 			_focusObserver
 				.OnFocusedCountriesUpdated
 				.Subscribe(_ => OnFocusChanged())
-				.AddTo(this);
-
-			var postRender = Camera.main.gameObject.AddComponent<CameraPostRenderObserver>();
-			postRender
-				.ObservePostRender
-				.Subscribe(_ => OnMainCameraPostRender())
 				.AddTo(this);
 
 			_eventStreamer
@@ -101,12 +95,17 @@ namespace Planet.Views
 
 		void OnMappingChanged()
 		{
-			var mappedEventViews = _viewMapping.Zip(_eventHeadlineViews, (c, v) => (c, v));
-			foreach (var (country, eventView) in mappedEventViews)
+			var mappedCountryCount = _viewMapping.Count;
+			_lines.SetLength(mappedCountryCount);
+			for (var i = 0; i < mappedCountryCount; i++)
 			{
+				var country = _viewMapping[i];
+				var eventView = _eventViews[i];
+
 				if (country == null)
 				{
 					eventView.Hide();
+					_lines.Disconnect(i);
 					continue;
 				}
 
@@ -114,40 +113,17 @@ namespace Planet.Views
 				if (_viewableFilter.Filter(events).TryLast(out var ev))
 				{
 					eventView.Load(ev).Forget(Debug.LogException);
+
+					var eventViewAnchor = eventView.transform;
+					var markerAnchor = _markers.GetAnchor(country);
+					_lines.Connect(i, eventViewAnchor, markerAnchor);
+
 					//Debug.Log(ev);
 					continue;
 				}
 
 				Debug.LogError($"No viewable events in focused country: {country}");
 			}
-		}
-
-		void OnMainCameraPostRender()
-		{
-			// Connect markers and event views with lines
-			var mappedCountries = _eventViewMapper.MappedCountries;
-			for (var i = 0; i < mappedCountries.Count; i++)
-			{
-				var mappedCountry = mappedCountries[i];
-				if (mappedCountry == null) continue;
-
-				var mappedEventView = _eventHeadlineViews[i];
-				_markers.TryGetMarkerWorldPosition(mappedCountry, out var mappedMarkerPositionn);
-
-				RenderGlLine(
-					_lineMaterial,
-					mappedMarkerPositionn,
-					mappedEventView.transform.position);
-			}
-		}
-
-		static void RenderGlLine(Material mat, Vector3 v1, Vector3 v2)
-		{
-			GL.Begin(GL.LINES);
-			mat.SetPass(0);
-			GL.Vertex3(v1.x, v1.y, v1.z);
-			GL.Vertex3(v2.x, v2.y, v2.z);
-			GL.End();
 		}
 	}
 }

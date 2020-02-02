@@ -29,6 +29,7 @@ namespace Planet.Views
 		const float PlanetRadius = 0.5f;
 
 		public float Scale => _scaler.localScale.x;
+		public Transform Anchor => _scaler;
 
 		void Reset()
 		{
