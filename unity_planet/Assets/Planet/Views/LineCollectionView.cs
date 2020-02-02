@@ -22,13 +22,18 @@ namespace Planet.Views
 		[SerializeField]
 		float _legLength;
 
+		[SerializeField]
+		AnimationCurve _curve;
+
 		List<(Transform marker, Transform eventView)> _connections;
 		List<LineViewState> _lineStates;
+		Vector3[] _points;
 
 		void Awake()
 		{
 			_connections = new List<(Transform, Transform)>();
 			_lineStates = new List<LineViewState>();
+			_points = new Vector3[3];
 		}
 
 		void Start()
@@ -101,20 +106,53 @@ namespace Planet.Views
 			_connections[index] = default;
 		}
 
-		void RenderLine(Vector3 markerPosition, Vector3 eventViewPosition, LineViewState lineState)
+		void RenderLine(Vector3 markerPosition, Vector3 panelPosition, LineViewState state)
 		{
-			var colorTime = lineState.PastTime / _fadeDuration;
-			var color = _lineColor.Evaluate(Mathf.Clamp01(colorTime));
+			var normalTime = Mathf.Clamp01(state.PastTime / _fadeDuration);
+			normalTime = _curve.Evaluate(normalTime);
 
 			var legVectorNormal = (markerPosition - _sphere.position).normalized;
 			var legVector = (legVectorNormal * _legLength).MultipliedBy(_sphere.lossyScale);
 			var kneePosition = markerPosition + legVector;
-		
-			DrawGlLine(markerPosition, kneePosition, _lineMaterial, color);
-			DrawGlLine(kneePosition, eventViewPosition, _lineMaterial, color);
+
+			_points[0] = panelPosition;
+			_points[1] = kneePosition;
+			_points[2] = markerPosition;
+
+			var color = _lineColor.Evaluate(normalTime);
+
+			DrawGlLine(_lineMaterial, color, normalTime, _points);
 		}
 
-		static void DrawGlLine(Vector3 p1, Vector3 p2, Material mat, Color color)
+		static void DrawGlLine(Material mat, Color color, float normalLength, params Vector3[] points)
+		{
+			var totalLength = 0f;
+			for (var i = 0; i < points.Length - 1; i++)
+			{
+				var p1 = points[i];
+				var p2 = points[i + 1];
+
+				var patialLength = (p2 - p1).magnitude;
+				totalLength += patialLength;
+			}
+
+			var restLength = totalLength * normalLength;
+			for (var i = 0; i < points.Length - 1; i++)
+			{
+				var p1 = points[i];
+				var p2 = points[i + 1];
+
+				var partialLength = (p2 - p1).magnitude;
+				var targetLength = Mathf.Min(partialLength, restLength);
+				restLength -= targetLength;
+
+				var p2p = p1 + (p2 - p1).normalized * targetLength;
+
+				DrawGlLine(mat, color, p1, p2p);
+			}
+		}
+
+		static void DrawGlLine(Material mat, Color color, Vector3 p1, Vector3 p2)
 		{
 			mat.SetPass(0);
 			GL.Begin(GL.LINES);
@@ -122,6 +160,9 @@ namespace Planet.Views
 			GL.Vertex3(p1.x, p1.y, p1.z);
 			GL.Vertex3(p2.x, p2.y, p2.z);
 			GL.End();
+
+			// Scene view support
+			Debug.DrawLine(p1, p2, color * mat.color);
 		}
 	}
 }

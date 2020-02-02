@@ -14,6 +14,9 @@ namespace Planet.Views
 		[SerializeField]
 		Gradient _color;
 
+		[SerializeField]
+		float _duration;
+
 		readonly int _colorId = Shader.PropertyToID("_Color");
 		bool _isFocused, _isViewable;
 
@@ -52,8 +55,8 @@ namespace Planet.Views
 				scale = 1f;
 			}
 
-			_renderer.material.DOColor(color, _colorId, 0.25f);
-			_transformer.DoScale(scale, 0.25f).SetEase(Ease.OutBack);
+			_renderer.material.DOColor(color, _colorId, _duration);
+			_transformer.DoScale(scale, _duration).SetEase(Ease.OutBack);
 		}
 	}
 }

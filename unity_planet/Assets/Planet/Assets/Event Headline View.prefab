@@ -85,6 +85,7 @@ MonoBehaviour:
   _sourceText: {fileID: 295212293987902809}
   _titleText: {fileID: 4470621534864512209}
   _thumbnailView: {fileID: 1505843386403864908}
+  _duration: 0.35
 --- !u!114 &9220003319660283785
 MonoBehaviour:
   m_ObjectHideFlags: 0
