@@ -14,6 +14,7 @@ namespace Planet
 			ErrorReceiverInstaller.Install(Container);
 			CountryGpsDictionaryInstaller.Install(Container);
 			EventStreamerInstaller.Install(Container, disposables);
+			EventFilterInstaller.Install(Container);
 		}
 
 		void Start()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Planet.Data;
@@ -28,7 +29,7 @@ namespace Planet.Views
 
 		IEventStreamer _eventStreamer;
 		EventViewMapper _eventViewMapper;
-		ViewableEventFilter _viewableFilter;
+		IEventFilter _eventFilter;
 		List<string> _viewMapping;
 
 		[Inject]
@@ -37,10 +38,15 @@ namespace Planet.Views
 			_eventStreamer = eventStreamer;
 		}
 
+		[Inject]
+		public void Inject(IEventFilter eventFilter)
+		{
+			_eventFilter = eventFilter;
+		}
+
 		void Start()
 		{
 			_eventViewMapper = new EventViewMapper(_eventViews.Length);
-			_viewableFilter = new ViewableEventFilter();
 			_viewMapping = new List<string>();
 
 			_focusObserver
@@ -65,7 +71,7 @@ namespace Planet.Views
 
 			// Enable to focus on viewable countries
 			var events = _eventStreamer.GetEvents(country);
-			var viewable = _viewableFilter.Filter(events).Any();
+			var viewable = _eventFilter.Filter(events).Any();
 			//Debug.Log($"{events.Count()} {viewable}");
 			_markers.SetMarkerViewable(country, viewable);
 			_focusObserver.SetViewable(country, viewable);
@@ -110,7 +116,7 @@ namespace Planet.Views
 				}
 
 				var events = _eventStreamer.GetEvents(country);
-				if (_viewableFilter.Filter(events).TryLast(out var ev))
+				if (_eventFilter.Filter(events).TryLast(out var ev))
 				{
 					eventView.Load(ev).Forget(Debug.LogException);
 
