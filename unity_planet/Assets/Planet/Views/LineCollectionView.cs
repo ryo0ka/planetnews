@@ -112,7 +112,7 @@ namespace Planet.Views
 			normalTime = _curve.Evaluate(normalTime);
 
 			var legVectorNormal = (markerPosition - _sphere.position).normalized;
-			var legVector = (legVectorNormal * _legLength).MultipliedBy(_sphere.lossyScale);
+			var legVector = (legVectorNormal * _legLength).Scaled(_sphere.lossyScale);
 			var kneePosition = markerPosition + legVector;
 
 			_points[0] = panelPosition;
@@ -146,7 +146,7 @@ namespace Planet.Views
 				var targetLength = Mathf.Min(partialLength, restLength);
 				restLength -= targetLength;
 
-				var p2p = p1 + (p2 - p1).normalized * targetLength;
+				var p2p = p1 + (p2 - p1).OfMagnitude(targetLength);
 
 				DrawGlLine(mat, color, p1, p2p);
 			}
