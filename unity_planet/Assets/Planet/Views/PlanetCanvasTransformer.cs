@@ -53,8 +53,8 @@ namespace Planet.Views
 			// Calculate the angle that keeps the panel against the camera
 			var p = _mainCameraTransform.position;
 			var o = _planetScaler.position;
-			var op = (p - o).Multiply(1, 0, 1).magnitude / canvasScale;
-			var h = (panelCenter.position - o).Multiply(1, 0, 1).magnitude / canvasScale;
+			var op = (p - o).MultipliedBy(1, 0, 1).magnitude / canvasScale;
+			var h = (panelCenter.position - o).MultipliedBy(1, 0, 1).magnitude / canvasScale;
 			var np = Mathf.Sqrt(op * op - h * h);
 			var od = Mathf.Atan(np / h) * Mathf.Rad2Deg;
 			var odlr = left ? od - 90 : 90 - od;

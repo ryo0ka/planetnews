@@ -114,9 +114,9 @@ namespace Planet.Views
 				{
 					eventView.Load(ev).Forget(Debug.LogException);
 
-					var eventViewAnchor = eventView.transform;
 					var markerAnchor = _markers.GetAnchor(country);
-					_lines.Connect(i, eventViewAnchor, markerAnchor);
+					var eventViewAnchor = eventView.transform;
+					_lines.Connect(i, markerAnchor, eventViewAnchor);
 
 					//Debug.Log(ev);
 					continue;
