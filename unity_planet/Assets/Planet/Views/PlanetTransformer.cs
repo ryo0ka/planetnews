@@ -7,16 +7,13 @@ namespace Planet.Views
 	public class PlanetTransformer : MonoBehaviour
 	{
 		[SerializeField]
-		Transform _planet;
+		PlanetRealtimeRotator _realtimeRotator;
 
 		[SerializeField]
 		Collider _planetCollider;
 
 		[SerializeField]
 		Collider _leftControllerCollider;
-
-		[SerializeField]
-		float _spinSpeed;
 
 		bool _canHold;
 
@@ -37,18 +34,19 @@ namespace Planet.Views
 
 			if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
 			{
-				_leftControllerPositionOffset = leftController.InverseTransformVector(_planet.position - leftController.position);
-				_leftControllerRotationOffset = Quaternion.Inverse(leftController.rotation) * _planet.rotation;
+				_leftControllerPositionOffset = leftController.InverseTransformVector(transform.position - leftController.position);
+				_leftControllerRotationOffset = Quaternion.Inverse(leftController.rotation) * transform.rotation;
 			}
 
 			if (_canHold && OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
 			{
-				_planet.position = leftController.position + leftController.TransformVector(_leftControllerPositionOffset);
-				_planet.rotation = leftController.rotation * _leftControllerRotationOffset;
+				transform.position = leftController.position + leftController.TransformVector(_leftControllerPositionOffset);
+				transform.rotation = leftController.rotation * _leftControllerRotationOffset;
+				_realtimeRotator.CanRotate = false;
 			}
 			else
 			{
-				_planet.Rotate(Vector3.up, Time.deltaTime * _spinSpeed, Space.Self);
+				_realtimeRotator.CanRotate = true;
 			}
 		}
 	}
