@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Planet.Utils;
-using UniRx;
 using UnityEngine;
 
 namespace Planet.Views
@@ -36,25 +35,13 @@ namespace Planet.Views
 			_points = new Vector3[3];
 		}
 
-		void Start()
-		{
-			var mainCamera = Camera.main;
-			mainCamera
-				.OnPostRenderAsObservable()
-				.Subscribe(_ => OnMainCameraPostRender())
-				.AddTo(this);
-		}
-
 		void Update()
 		{
 			foreach (var lineState in _lineStates)
 			{
 				lineState.Update();
 			}
-		}
 
-		void OnMainCameraPostRender()
-		{
 			for (var i = 0; i < _connections.Count; i++)
 			{
 				var (marker, eventView) = _connections[i];
@@ -63,8 +50,10 @@ namespace Planet.Views
 				var position1 = marker.position;
 				var position2 = eventView.position;
 				var lineState = _lineStates[i];
-				RenderLine(position1, position2, lineState);
+				DrawLine(position1, position2, lineState);
 			}
+			
+			
 		}
 
 		public void SetLength(int length)
@@ -106,7 +95,7 @@ namespace Planet.Views
 			_connections[index] = default;
 		}
 
-		void RenderLine(Vector3 markerPosition, Vector3 panelPosition, LineViewState state)
+		void DrawLine(Vector3 markerPosition, Vector3 panelPosition, LineViewState state)
 		{
 			var normalTime = Mathf.Clamp01(state.PastTime / _fadeDuration);
 			normalTime = _curve.Evaluate(normalTime);
@@ -121,10 +110,10 @@ namespace Planet.Views
 
 			var color = _lineColor.Evaluate(normalTime);
 
-			DrawGlLine(_lineMaterial, color, normalTime, _points);
+			DrawLine(_lineMaterial, color, normalTime, _points);
 		}
 
-		static void DrawGlLine(Material mat, Color color, float normalLength, params Vector3[] points)
+		static void DrawLine(Material mat, Color color, float normalLength, params Vector3[] points)
 		{
 			var totalLength = 0f;
 			for (var i = 0; i < points.Length - 1; i++)
@@ -148,21 +137,16 @@ namespace Planet.Views
 
 				var p2p = p1 + (p2 - p1).OfMagnitude(targetLength);
 
-				DrawGlLine(mat, color, p1, p2p);
+				DrawLine(mat, color, p1, p2p);
 			}
 		}
 
-		static void DrawGlLine(Material mat, Color color, Vector3 p1, Vector3 p2)
+		static void DrawLine(Material mat, Color color, Vector3 p1, Vector3 p2)
 		{
-			mat.SetPass(0);
-			GL.Begin(GL.LINES);
-			GL.Color(color); // vertex color
-			GL.Vertex3(p1.x, p1.y, p1.z);
-			GL.Vertex3(p2.x, p2.y, p2.z);
-			GL.End();
-
-			// Scene view support
+			// Editor scene view support
 			Debug.DrawLine(p1, p2, color * mat.color);
+
+			IMDraw.Line3D(p1, p2, color, 0f);
 		}
 	}
 }
