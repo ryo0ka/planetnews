@@ -4,7 +4,7 @@
 QualitySettings:
   m_ObjectHideFlags: 0
   serializedVersion: 5
-  m_CurrentQuality: 5
+  m_CurrentQuality: 2
   m_QualitySettings:
   - serializedVersion: 2
     name: Very Low
@@ -40,7 +40,10 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    excludedTargetPlatforms: []
+    customRenderPipeline: {fileID: 11400000, guid: a9651ef40a2d74e7db4c60172b02f419,
+      type: 2}
+    excludedTargetPlatforms:
+    - Android
   - serializedVersion: 2
     name: Low
     pixelLightCount: 0
@@ -75,7 +78,10 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    excludedTargetPlatforms: []
+    customRenderPipeline: {fileID: 11400000, guid: a9651ef40a2d74e7db4c60172b02f419,
+      type: 2}
+    excludedTargetPlatforms:
+    - Android
   - serializedVersion: 2
     name: Medium
     pixelLightCount: 1
@@ -96,7 +102,7 @@ QualitySettings:
     softVegetation: 0
     realtimeReflectionProbes: 0
     billboardsFaceCameraPosition: 0
-    vSyncCount: 1
+    vSyncCount: 0
     lodBias: 0.7
     maximumLODLevel: 0
     streamingMipmapsActive: 0
@@ -110,6 +116,8 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
+    customRenderPipeline: {fileID: 11400000, guid: a9651ef40a2d74e7db4c60172b02f419,
+      type: 2}
     excludedTargetPlatforms: []
   - serializedVersion: 2
     name: High
@@ -145,7 +153,10 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    excludedTargetPlatforms: []
+    customRenderPipeline: {fileID: 11400000, guid: a9651ef40a2d74e7db4c60172b02f419,
+      type: 2}
+    excludedTargetPlatforms:
+    - Android
   - serializedVersion: 2
     name: Very High
     pixelLightCount: 3
@@ -180,7 +191,10 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    excludedTargetPlatforms: []
+    customRenderPipeline: {fileID: 11400000, guid: a9651ef40a2d74e7db4c60172b02f419,
+      type: 2}
+    excludedTargetPlatforms:
+    - Android
   - serializedVersion: 2
     name: Ultra
     pixelLightCount: 4
@@ -215,7 +229,10 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    excludedTargetPlatforms: []
+    customRenderPipeline: {fileID: 11400000, guid: a9651ef40a2d74e7db4c60172b02f419,
+      type: 2}
+    excludedTargetPlatforms:
+    - Android
   m_PerPlatformDefaultQuality:
     Android: 2
     Lumin: 5

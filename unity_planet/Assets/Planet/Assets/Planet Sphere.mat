@@ -8,7 +8,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Planet Sphere
-  m_Shader: {fileID: 4800000, guid: 5cc8e3f9708ea427b9f916ce5455590b, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: a535b26e508b4495694e71c46e7259d1,
+    type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,6 +20,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_3E2063BF:
+        m_Texture: {fileID: 2800000, guid: b37019b0a2736a943a5c11c9a5472b79, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: b9bde0ce2b53f2144852ee95519c5736, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -59,6 +64,30 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _PlanetAlbedo:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_15113250_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 6e40587f083483248a55e4b409dabeb4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_17ED2323_Texture_1:
+        m_Texture: {fileID: 2800000, guid: b37019b0a2736a943a5c11c9a5472b79, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_293F54BF_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 3d650b2b67d9b1341861a4fd90c20b97, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_4ACA4630_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 3d650b2b67d9b1341861a4fd90c20b97, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_58914709_Out_0:
+        m_Texture: {fileID: 2800000, guid: b37019b0a2736a943a5c11c9a5472b79, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -70,14 +99,19 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _NightLength: 0.452
+    - _NightMapContrast: 1
+    - _NightMapLength: 0.334
+    - _NightMapScale: 1.218
+    - _NightMapThreshold: 1.3
     - _NightScale: 1.91
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RimPower: 3.13
+    - _RimPower: 5
     - _RimScale: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _SunlightIntensity: 1.67
     - _SunlightScale: 3.63
     - _UVSec: 0
     - _ZWrite: 1
@@ -85,4 +119,5 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _NightColor: {r: 1, g: 0.9711391, b: 0.7137255, a: 1}
+    - _NightMapColor: {r: 2.9960785, g: 2.3529413, b: 0.9254902, a: 1}
     - _RimColor: {r: 0, g: 1, b: 1, a: 0}
