@@ -2,7 +2,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Planet.Views
+namespace Planet.Views.Handles
 {
 	public class RotationHandleView : MonoBehaviour
 	{

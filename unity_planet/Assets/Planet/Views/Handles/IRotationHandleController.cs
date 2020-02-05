@@ -1,4 +1,4 @@
-namespace Planet.Views
+namespace Planet.Views.Handles
 {
 	public interface IRotationHandleController
 	{

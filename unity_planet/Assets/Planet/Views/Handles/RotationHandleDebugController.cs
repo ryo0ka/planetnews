@@ -3,7 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Planet.Views
+namespace Planet.Views.Handles
 {
 	public class RotationHandleDebugController :
 		MonoBehaviour,

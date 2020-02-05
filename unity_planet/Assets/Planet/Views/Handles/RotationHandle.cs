@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-namespace Planet.Views
+namespace Planet.Views.Handles
 {
 	public class RotationHandle : MonoBehaviour
 	{
