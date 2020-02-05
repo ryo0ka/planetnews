@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Planet.Data;
 using Planet.Models;
 using Planet.Utils;
-using Sirenix.OdinInspector;
 using UniRx;
 using UniRx.Async;
 using UnityEngine;
@@ -24,12 +22,12 @@ namespace Planet.Views
 		[SerializeField]
 		CountryFocusObserver _focusObserver;
 
-		[SerializeField, DisableInPlayMode]
-		EventHeadlineView[] _eventViews;
+		[SerializeField]
+		EventCollectionView _eventViews;
 
 		IEventStreamer _eventStreamer;
-		EventViewMapper _eventViewMapper;
 		IEventFilter _eventFilter;
+		EventViewMapper _eventViewMapper;
 		List<string> _viewMapping;
 
 		[Inject]
@@ -89,7 +87,6 @@ namespace Planet.Views
 			// Update event view mapping
 			var focusedCountries = _focusObserver.FocusedCountries;
 			_eventViewMapper.UpdateMapping(focusedCountries);
-
 			var viewMapping = _eventViewMapper.MappedCountries;
 			if (!viewMapping.SequenceEqual(_viewMapping))
 			{
