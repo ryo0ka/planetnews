@@ -7,34 +7,47 @@ namespace Planet.Views
 	public class RotationHandleView : MonoBehaviour
 	{
 		[SerializeField]
-		MeshRenderer _renderer;
+		MeshRenderer[] _renderers;
+
+		[SerializeField]
+		Material _sourceMaterial;
+
+		[SerializeField]
+		Material _planetMaterial;
 
 		[SerializeField]
 		float _duration;
 
-		readonly int AlphaNormalId = Shader.PropertyToID("_AlphaNormal");
+		Material _material;
+		readonly int SelectionNormalId = Shader.PropertyToID("_SelectionNormal");
 
 		void Start()
 		{
-			_renderer.material.SetFloat(AlphaNormalId, 0f);
+			_material = Instantiate(_sourceMaterial);
+			foreach (var meshRenderer in _renderers)
+			{
+				meshRenderer.material = _material;
+			}
+
+			SetSelectionNormal(0f);
 		}
 
 		[Button, DisableInEditorMode]
 		public void StartPing()
 		{
-			_renderer.material.DOFloat(.5f, AlphaNormalId, _duration);
+			DOSelectionNormal(0.5f);
 		}
 
 		[Button, DisableInEditorMode]
 		public void EndPing()
 		{
-			_renderer.material.DOFloat(0f, AlphaNormalId, _duration);
+			DOSelectionNormal(0f);
 		}
 
 		[Button, DisableInEditorMode]
 		public void StartGrab()
 		{
-			_renderer.material.DOFloat(1f, AlphaNormalId, _duration);
+			DOSelectionNormal(1f);
 		}
 
 		// should be called every frame
@@ -46,7 +59,19 @@ namespace Planet.Views
 		[Button, DisableInEditorMode]
 		public void EndGrab()
 		{
-			_renderer.material.DOFloat(0f, AlphaNormalId, _duration);
+			DOSelectionNormal(0f);
+		}
+
+		void SetSelectionNormal(float normal)
+		{
+			_material.SetFloat(SelectionNormalId, normal);
+			_planetMaterial.SetFloat(SelectionNormalId, normal);
+		}
+
+		void DOSelectionNormal(float toNormal)
+		{
+			_material.DOFloat(toNormal, SelectionNormalId, _duration);
+			_planetMaterial.DOFloat(toNormal, SelectionNormalId, _duration);
 		}
 	}
 }
