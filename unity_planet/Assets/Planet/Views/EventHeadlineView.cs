@@ -49,6 +49,8 @@ namespace Planet.Views
 
 		void RunUnfadeEffect()
 		{
+			if (!_thumbnailView) return;
+
 			_thumbnailView.ImageMaterial.SetFloat(_fadeId, 1f);
 			_thumbnailView.ImageMaterial.DOFloat(0f, _fadeId, _duration).SetEase(Ease.OutSine);
 		}
