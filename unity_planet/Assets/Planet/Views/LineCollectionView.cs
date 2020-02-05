@@ -10,9 +10,6 @@ namespace Planet.Views
 		Transform _sphere;
 
 		[SerializeField]
-		Material _lineMaterial;
-
-		[SerializeField]
 		Gradient _lineColor;
 
 		[SerializeField]
@@ -52,8 +49,6 @@ namespace Planet.Views
 				var lineState = _lineStates[i];
 				DrawLine(position1, position2, lineState);
 			}
-			
-			
 		}
 
 		public void SetLength(int length)
@@ -110,10 +105,10 @@ namespace Planet.Views
 
 			var color = _lineColor.Evaluate(normalTime);
 
-			DrawLine(_lineMaterial, color, normalTime, _points);
+			DrawLine(color, normalTime, _points);
 		}
 
-		static void DrawLine(Material mat, Color color, float normalLength, params Vector3[] points)
+		static void DrawLine(Color color, float normalLength, params Vector3[] points)
 		{
 			var totalLength = 0f;
 			for (var i = 0; i < points.Length - 1; i++)
@@ -137,14 +132,14 @@ namespace Planet.Views
 
 				var p2p = p1 + (p2 - p1).OfMagnitude(targetLength);
 
-				DrawLine(mat, color, p1, p2p);
+				DrawLine(color, p1, p2p);
 			}
 		}
 
-		static void DrawLine(Material mat, Color color, Vector3 p1, Vector3 p2)
+		static void DrawLine(Color color, Vector3 p1, Vector3 p2)
 		{
 			// Editor scene view support
-			Debug.DrawLine(p1, p2, color * mat.color);
+			Debug.DrawLine(p1, p2, color * color);
 
 			IMDraw.Line3D(p1, p2, color, 0f);
 		}
