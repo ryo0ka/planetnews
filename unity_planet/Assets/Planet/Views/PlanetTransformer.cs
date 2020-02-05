@@ -7,16 +7,12 @@ namespace Planet.Views
 	public class PlanetTransformer : MonoBehaviour
 	{
 		[SerializeField]
-		PlanetRealtimeRotator _realtimeRotator;
-
-		[SerializeField]
 		Collider _planetCollider;
 
 		[SerializeField]
 		Collider _leftControllerCollider;
 
 		bool _canHold;
-
 		Vector3 _leftControllerPositionOffset;
 		Quaternion _leftControllerRotationOffset;
 
@@ -42,11 +38,6 @@ namespace Planet.Views
 			{
 				transform.position = leftController.position + leftController.TransformVector(_leftControllerPositionOffset);
 				transform.rotation = leftController.rotation * _leftControllerRotationOffset;
-				_realtimeRotator.CanRotate = false;
-			}
-			else
-			{
-				_realtimeRotator.CanRotate = true;
 			}
 		}
 	}
