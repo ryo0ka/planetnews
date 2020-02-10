@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Planet.CountryCodeToGps;
+using Planet.Utils;
 using UnityEngine;
 using Zenject;
 
@@ -12,6 +13,9 @@ namespace Planet.Views
 
 		[SerializeField]
 		MarkerView _markerPrefab;
+
+		[SerializeField]
+		float _heightOffset;
 
 		Dictionary<string, MarkerView> _markers;
 		CountryGpsDictionary _countryGpsDictionary;
@@ -31,13 +35,18 @@ namespace Planet.Views
 		{
 			if (_markers.ContainsKey(country)) return;
 
-			var latlong = _countryGpsDictionary[country];
 			var marker = Instantiate(_markerPrefab, _markerRoot);
 			marker.name = $"Marker ({country})";
-			marker.SetPosition(latlong.Latitude, latlong.Longitude);
 			marker.SetFocused(false);
-
 			_markers.Add(country, marker);
+
+			var latlong = _countryGpsDictionary[country];
+			var rot = PlanetMath.GpsToSpherical(latlong.Latitude, latlong.Longitude);
+			var pos = rot * (Vector3.forward * (0.5f + _heightOffset));
+			var markerT = marker.transform;
+			markerT.localRotation = rot;
+			markerT.localPosition = pos;
+			markerT.localScale = Vector3.one;
 		}
 
 		public void SetMarkerViewable(string country, bool viewable)
@@ -64,7 +73,7 @@ namespace Planet.Views
 
 		public Transform GetAnchor(string country)
 		{
-			return _markers[country].Anchor;
+			return _markers[country].transform;
 		}
 	}
 }

@@ -1685,6 +1685,7 @@ MonoBehaviour:
   _markerRoot: {fileID: 1506820678}
   _markerPrefab: {fileID: 5571523771526809293, guid: 03b5bebf463694f7d9e75ff2307916c4,
     type: 3}
+  _heightOffset: 0.01
 --- !u!114 &395097280
 MonoBehaviour:
   m_ObjectHideFlags: 0

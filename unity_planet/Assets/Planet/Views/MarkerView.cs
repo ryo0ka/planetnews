@@ -6,9 +6,6 @@ namespace Planet.Views
 	public class MarkerView : MonoBehaviour
 	{
 		[SerializeField]
-		MarkerTransformer _transformer;
-
-		[SerializeField]
 		MeshRenderer _renderer;
 
 		[SerializeField]
@@ -19,13 +16,6 @@ namespace Planet.Views
 
 		readonly int _colorId = Shader.PropertyToID("_Color");
 		bool _isFocused, _isViewable;
-
-		public Transform Anchor => _transformer.Anchor;
-
-		public void SetPosition(float latitude, float longitude)
-		{
-			_transformer.SetPosition(latitude, longitude);
-		}
 
 		public void SetFocused(bool focused)
 		{
@@ -56,7 +46,7 @@ namespace Planet.Views
 			}
 
 			_renderer.material.DOColor(color, _colorId, _duration);
-			_transformer.DoScale(scale, _duration).SetEase(Ease.OutBack);
+			transform.DOScale(scale, _duration).SetEase(Ease.OutBack);
 		}
 	}
 }
