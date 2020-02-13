@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Planet.Utils;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Planet.Views
 {
@@ -21,73 +22,79 @@ namespace Planet.Views
 		[SerializeField]
 		AnimationCurve _curve;
 
-		List<(Transform marker, Transform eventView)> _connections;
+		OrderedSet<(Transform marker, Transform panel)> _lines;
 		List<LineViewState> _lineStates;
+		HashSet<(Transform marker, Transform panel)> _newLines;
+		List<int> _remover;
 		Vector3[] _points;
 
 		void Awake()
 		{
-			_connections = new List<(Transform, Transform)>();
+			_lines = new OrderedSet<(Transform, Transform)>();
 			_lineStates = new List<LineViewState>();
+			_newLines = new HashSet<(Transform, Transform)>();
+			_remover = new List<int>();
 			_points = new Vector3[3];
 		}
 
 		void Update()
 		{
-			foreach (var lineState in _lineStates)
+			Profiler.BeginSample("Planet/LineCollectionView.Update()");
+			
+			for (var i = 0; i < _lines.Count; i++)
 			{
-				lineState.Update();
-			}
-
-			for (var i = 0; i < _connections.Count; i++)
-			{
-				var (marker, eventView) = _connections[i];
-				if (!marker || !eventView) continue;
-
-				var position1 = marker.position;
-				var position2 = eventView.position;
+				var (p1, p2) = _lines[i];
 				var lineState = _lineStates[i];
-				DrawLine(position1, position2, lineState);
+				lineState.Update();
+				DrawLine(p1.position, p2.position, lineState);
 			}
 		}
 
-		public void SetLength(int length)
+		public void PrepareUpdateConnections()
 		{
-			var originalLength = _connections.Count;
-			if (originalLength >= length)
+			_newLines.Clear();
+		}
+
+		public void Connect(Transform marker, Transform panel)
+		{
+			_newLines.Add((marker, panel));
+		}
+
+		public void UpdateConnections()
+		{
+			Profiler.BeginSample("Planet/Update connections");
+			
+			// add new connections
+			foreach (var mp in _newLines)
 			{
-				// Trim end
-				_connections.RemoveRange(length, originalLength - length);
-			}
-			else
-			{
-				// Add until the length
-				while (_connections.Count < length)
+				if (!_lines.Contains(mp))
 				{
-					_connections.Add(default);
+					_lines.Add(mp);
+					_lineStates.Add(new LineViewState());
 				}
 			}
 
-			// Expand state list if necessary
-			while (_lineStates.Count < length)
+			// find obsolete connections
+			_remover.Clear();
+			for (var i = 0; i < _lines.Count; i++)
 			{
-				_lineStates.Add(new LineViewState());
+				var mp = _lines[i];
+				if (!_newLines.Contains(mp))
+				{
+					_remover.Add(i);
+				}
 			}
-		}
 
-		public void Connect(int index, Transform marker, Transform eventView)
-		{
-			var (lastMarker, lastEventView) = _connections[index];
-			if (lastMarker != marker || lastEventView != eventView)
+			// remove obsolete connections
+			_remover.Sort();
+			for (var i = _remover.Count - 1; i >= 0; i--)
 			{
-				_connections[index] = (marker, eventView);
-				_lineStates[index].Initialize();
+				var removedIndex = _remover[i];
+				_lines.RemoveAt(removedIndex);
+				_lineStates.RemoveAt(removedIndex);
 			}
-		}
-
-		public void Disconnect(int index)
-		{
-			_connections[index] = default;
+			
+			Profiler.EndSample();
 		}
 
 		void DrawLine(Vector3 markerPosition, Vector3 panelPosition, LineViewState state)
@@ -105,43 +112,8 @@ namespace Planet.Views
 
 			var color = _lineColor.Evaluate(normalTime);
 
-			DrawLine(color, normalTime, _points);
-		}
-
-		static void DrawLine(Color color, float normalLength, params Vector3[] points)
-		{
-			var totalLength = 0f;
-			for (var i = 0; i < points.Length - 1; i++)
-			{
-				var p1 = points[i];
-				var p2 = points[i + 1];
-
-				var patialLength = (p2 - p1).magnitude;
-				totalLength += patialLength;
-			}
-
-			var restLength = totalLength * normalLength;
-			for (var i = 0; i < points.Length - 1; i++)
-			{
-				var p1 = points[i];
-				var p2 = points[i + 1];
-
-				var partialLength = (p2 - p1).magnitude;
-				var targetLength = Mathf.Min(partialLength, restLength);
-				restLength -= targetLength;
-
-				var p2p = p1 + (p2 - p1).OfMagnitude(targetLength);
-
-				DrawLine(color, p1, p2p);
-			}
-		}
-
-		static void DrawLine(Color color, Vector3 p1, Vector3 p2)
-		{
-			// Editor scene view support
-			Debug.DrawLine(p1, p2, color * color);
-
-			IMDraw.Line3D(p1, p2, color, 0f);
+			UnityUtils.DrawLine(color, normalTime, _points);
+			Debug.DrawLine(markerPosition, panelPosition, Color.cyan);
 		}
 	}
 }

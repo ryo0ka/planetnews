@@ -1,13 +1,11 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Planet.Views
 {
 	public class MarkerView : MonoBehaviour
 	{
-		[SerializeField]
-		MarkerTransformer _transformer;
-
 		[SerializeField]
 		MeshRenderer _renderer;
 
@@ -18,36 +16,34 @@ namespace Planet.Views
 		float _duration;
 
 		readonly int _colorId = Shader.PropertyToID("_Color");
-		bool _isFocused, _isViewable;
+		bool? _isHighlighted, _isViewable;
 
-		public Transform Anchor => _transformer.Anchor;
-
-		public void SetPosition(float latitude, float longitude)
+		public void SetHighlighted(bool highlighted)
 		{
-			_transformer.SetPosition(latitude, longitude);
-		}
-
-		public void SetFocused(bool focused)
-		{
-			_isFocused = focused;
+			if (highlighted == _isHighlighted) return;
+			_isHighlighted = highlighted;
 			UpdateView();
 		}
 
 		public void SetViewable(bool viewable)
 		{
+			if (viewable == _isViewable) return;
 			_isViewable = viewable;
 			UpdateView();
 		}
 
 		void UpdateView()
 		{
+			Profiler.BeginSample("MarkerView.UpdateView()");
+
 			Color color;
 			float scale;
 
-			if (_isViewable)
+			if (_isViewable ?? false)
 			{
-				color = _color.Evaluate(_isFocused ? 1f : 0f);
-				scale = _isFocused ? 2f : 1f;
+				var highlighted = _isHighlighted ?? false;
+				color = _color.Evaluate(highlighted ? 1f : 0f);
+				scale = highlighted ? 2f : 1f;
 			}
 			else
 			{
@@ -56,7 +52,9 @@ namespace Planet.Views
 			}
 
 			_renderer.material.DOColor(color, _colorId, _duration);
-			_transformer.DoScale(scale, _duration).SetEase(Ease.OutBack);
+			transform.DOScale(scale, _duration).SetEase(Ease.OutBack);
+
+			Profiler.EndSample();
 		}
 	}
 }

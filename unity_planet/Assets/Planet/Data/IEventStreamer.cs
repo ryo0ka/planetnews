@@ -13,7 +13,7 @@ namespace Planet.Data
 		/// Return all events in the country.
 		/// Return an empty list if not found.
 		/// </summary>
-		IEnumerable<IEvent> GetEvents(string country);
+		IReadOnlyList<IEvent> GetEvents(string country);
 
 		/// <summary>
 		/// Start loading the resource.
