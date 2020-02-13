@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Planet.Data;
@@ -7,6 +6,7 @@ using Planet.Utils;
 using UniRx;
 using UniRx.Async;
 using UnityEngine;
+using UnityEngine.Profiling;
 using Zenject;
 
 namespace Planet.Views
@@ -25,19 +25,27 @@ namespace Planet.Views
 
 		Camera _camera;
 		IEventStreamer _events;
-		List<string> _countries;
+		HashSet<string> _countries;
 		List<(string, int)?> _mappedEvents;
 		List<(string, int)?> _lastMappedEvents;
-		List<(string, int)?> _tmpLastMappedEvents;
+		List<(string, int)?> _lastMappedEventsCopy;
+		List<(string, Vector2)> _countriesSorted;
+		Dictionary<string, int> _eventCounts;
+		ViewAngleComparer _viewAngleComparer;
+		VerticalViewAngleComparer _verticalViewAngleComparer;
 
 		const float MaxViewAngle = 90;
 
 		void Awake()
 		{
-			_countries = new List<string>();
+			_countries = new HashSet<string>();
 			_mappedEvents = new List<(string, int)?>();
 			_lastMappedEvents = new List<(string, int)?>();
-			_tmpLastMappedEvents = new List<(string, int)?>();
+			_lastMappedEventsCopy = new List<(string, int)?>();
+			_countriesSorted = new List<(string, Vector2)>();
+			_eventCounts = new Dictionary<string, int>();
+			_viewAngleComparer = new ViewAngleComparer();
+			_verticalViewAngleComparer = new VerticalViewAngleComparer();
 		}
 
 		[Inject]
@@ -99,12 +107,20 @@ namespace Planet.Views
 
 		void Update()
 		{
+			Profiler.BeginSample("Planet/PlanetViewController.Update()");
+
+			Profiler.BeginSample("Initialize");
+
 			_mappedEvents.Fill(0, _panels.Count, null);
 
-			_tmpLastMappedEvents.Clear();
-			_tmpLastMappedEvents.AddRange(_lastMappedEvents);
+			_lastMappedEventsCopy.Clear();
+			_lastMappedEventsCopy.AddRange(_lastMappedEvents);
 
-			var tmpViewAngles = new Dictionary<string, Vector2>();
+			_countriesSorted.Clear();
+			_eventCounts.Clear();
+
+			Profiler.EndSample();
+			Profiler.BeginSample("Sample view angles");
 
 			// sample view angles
 			foreach (var country in _countries)
@@ -112,25 +128,27 @@ namespace Planet.Views
 				var viewAngles = _markers.CalcViewAngles(country, _camera.transform);
 				if (TestThresholdAngles(viewAngles))
 				{
-					tmpViewAngles[country] = viewAngles;
+					_countriesSorted.Add((country, viewAngles));
 				}
 			}
 
-			var tmpCountriesSortedByViewAngle =
-				tmpViewAngles
-					.OrderBy(p => p.Value, new ViewAngleComparer())
-					.Select(p => p.Key)
-					.Take(_panels.Count)
-					.ToList();
+			Profiler.EndSample();
+			Profiler.BeginSample("Sort by view angles");
 
-			var tmpCountriesSortedByVerticalViewAngle =
-				tmpCountriesSortedByViewAngle
-					.OrderBy(c => tmpViewAngles[c].y)
-					.ToList();
+			// Sort by view angles from the camera
+			_countriesSorted.Sort(_viewAngleComparer);
 
-			var tmpEventCounts = new Dictionary<string, int>();
+			// Get rid of countries outside bound (panel count)
+			_countriesSorted.TrimLength(_panels.Count);
 
-			//Debug.Log("0 old: " + string.Join(", ", _lastMappedCountries));
+			Profiler.EndSample();
+			Profiler.BeginSample("Sort by vertical view angles");
+
+			// Sort by vertical view angles
+			_countriesSorted.Sort(_verticalViewAngleComparer);
+
+			Profiler.EndSample();
+			Profiler.BeginSample("Map countries");
 
 			var mappedCount = 0;
 			while (mappedCount < _panels.Count)
@@ -138,68 +156,59 @@ namespace Planet.Views
 				var hasMoreEvents = false;
 
 				// iterating thru countries sorted in vertical view angles (top to bottom)
-				foreach (var country in tmpCountriesSortedByVerticalViewAngle)
+				foreach (var (country, _) in _countriesSorted)
 				{
-					var eventIndex = tmpEventCounts.GetValueOrElse(country, 0);
+					Profiler.BeginSample("Test event count");
+
+					var eventIndex = _eventCounts.GetValueOrElse(country, 0);
 					var eventCount = _events.GetEvents(country).Count;
-					if (eventIndex >= eventCount) continue; // no more events to show
 
-					var foundSameEventInLastMapping = false;
-					var foundIndex = -1;
-					for (var i = 0; i < _tmpLastMappedEvents.Count; i++)
-					{
-						var lastMappedEvent = _tmpLastMappedEvents[i];
-						if (lastMappedEvent == (country, eventIndex))
-						{
-							foundSameEventInLastMapping = true;
-							foundIndex = i;
-							break;
-						}
-					}
+					Profiler.EndSample();
 
-					if (!foundSameEventInLastMapping)
-					{
-						for (var i = 0; i < _tmpLastMappedEvents.Count; i++)
-						{
-							var lastMappedEvent = _tmpLastMappedEvents[i];
-							if (lastMappedEvent?.Item1 == country)
-							{
-								foundSameEventInLastMapping = true;
-								foundIndex = i;
-								break;
-							}
-						}
-					}
+					if (eventIndex >= eventCount) continue; // got no more events to show
 
-					if (foundSameEventInLastMapping)
-					{
-						_tmpLastMappedEvents[foundIndex] = null;
-						_mappedEvents[foundIndex] = (country, eventIndex);
-					}
-					else if (_mappedEvents.IndexOf(null) is var emptyIndex &&
-					         emptyIndex >= 0)
-					{
-						_mappedEvents[emptyIndex] = (country, eventIndex);
-					}
-
-					tmpEventCounts[country] = eventIndex + 1;
-					mappedCount += 1;
 					hasMoreEvents = true;
+
+					Profiler.BeginSample("Search matching event from last mapping");
+
+					var foundMatchInLastMapping =
+						TryGetExactMatch((country, eventIndex), _lastMappedEventsCopy, out var matchedIndex) ||
+						TryGetMatch((country, eventIndex), _lastMappedEventsCopy, out matchedIndex);
+
+					Profiler.EndSample();
+
+					if (foundMatchInLastMapping)
+					{
+						// keep the matching event on the same panel
+						_mappedEvents[matchedIndex] = (country, eventIndex);
+
+						// remove the event from the lookup
+						_lastMappedEventsCopy[matchedIndex] = null;
+					}
+					else if (_mappedEvents.TryIndexOf(null, out var mappableIndex))
+					{
+						// insert the event in an empty panel
+						_mappedEvents[mappableIndex] = (country, eventIndex);
+					}
+
+					_eventCounts[country] = eventIndex + 1;
+					mappedCount += 1;
 				}
 
 				if (!hasMoreEvents) break;
 			}
 
+			Profiler.EndSample();
+
 			if (!_mappedEvents.SequenceEqual(_lastMappedEvents))
 			{
-				Debug.Log("1 new: " + string.Join(", ", _mappedEvents.Select(n => $"({n?.Item1}, {n?.Item2})")) +
-				          " <- " + string.Join(", ", _tmpLastMappedEvents));
-
 				OnMappingChanged();
 
 				_lastMappedEvents.Clear();
 				_lastMappedEvents.AddRange(_mappedEvents);
 			}
+
+			Profiler.EndSample();
 		}
 
 		bool TestThresholdAngles(Vector2 viewAngles)
@@ -207,26 +216,74 @@ namespace Planet.Views
 			return Mathf.Abs(viewAngles.x) < MaxViewAngle && Mathf.Abs(viewAngles.y) < MaxViewAngle;
 		}
 
+		bool TryGetExactMatch((string, int) e, IReadOnlyList<(string, int)?> mapping, out int matchIndex)
+		{
+			for (var i = 0; i < mapping.Count; i++)
+			{
+				var lastMappedEvent = mapping[i];
+				if (lastMappedEvent == e)
+				{
+					matchIndex = i;
+					return true;
+				}
+			}
+
+			matchIndex = -1;
+			return false;
+		}
+
+		bool TryGetMatch((string, int) e, IReadOnlyList<(string, int)?> mapping, out int matchIndex)
+		{
+			for (var i = 0; i < mapping.Count; i++)
+			{
+				var lastMappedEvent = mapping[i];
+				if (lastMappedEvent?.Item1 == e.Item1)
+				{
+					matchIndex = i;
+					return true;
+				}
+			}
+
+			matchIndex = -1;
+			return false;
+		}
+
 		void OnMappingChanged()
 		{
+			Profiler.BeginSample("Planet/Update lines and markers");
+
+			Profiler.BeginSample("Initialize");
+
 			_lines.PrepareUpdateConnections();
 			_markers.SetAllMarkersHighlighted(false);
+
+			Profiler.EndSample();
 
 			for (var i = 0; i < _panels.Count; i++)
 			{
 				var panel = _panels[i];
-				if (_mappedEvents[i] is ValueTuple<string, int> n)
+				var pair = _mappedEvents[i];
+				if (pair.HasValue)
 				{
-					var (country, eventIndex) = n;
+					Profiler.BeginSample("Connect marker and panel");
+
+					var (country, eventIndex) = pair.Value;
 					var events = _events.GetEvents(country);
 					var ev = events[events.Count - eventIndex - 1];
+
+					Profiler.BeginSample("Load panel");
+
 					panel.Load(ev).Forget(Debug.LogException);
+
+					Profiler.EndSample();
 
 					var markerAnchor = _markers.GetAnchor(country);
 					var panelAnchor = panel.transform;
 					_lines.Connect(markerAnchor, panelAnchor);
 
 					_markers.SetMarkerHighlighted(country, true);
+
+					Profiler.EndSample();
 				}
 				else
 				{
@@ -235,13 +292,23 @@ namespace Planet.Views
 			}
 
 			_lines.UpdateConnections();
+
+			Profiler.EndSample();
 		}
 
-		struct ViewAngleComparer : IComparer<Vector2>
+		sealed class ViewAngleComparer : IComparer<(string, Vector2)>
 		{
-			public int Compare(Vector2 a, Vector2 b)
+			public int Compare((string, Vector2) a, (string, Vector2) b)
 			{
-				return Comparer<float>.Default.Compare(a.magnitude, b.magnitude);
+				return Comparer<float>.Default.Compare(a.Item2.magnitude, b.Item2.magnitude);
+			}
+		}
+
+		sealed class VerticalViewAngleComparer : IComparer<(string, Vector2)>
+		{
+			public int Compare((string, Vector2) a, (string, Vector2) b)
+			{
+				return Comparer<float>.Default.Compare(a.Item2.y, b.Item2.y);
 			}
 		}
 	}

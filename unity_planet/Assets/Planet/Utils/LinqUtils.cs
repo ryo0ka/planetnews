@@ -62,7 +62,27 @@ namespace Planet.Utils
 
 		public static void TrimLength<T>(this List<T> self, int length)
 		{
+			if (self.Count <= length) return;
 			self.RemoveRange(length, self.Count - length);
+		}
+
+		public static void AddRange<T>(this ICollection<T> self, IEnumerable<T> other)
+		{
+			foreach (var e in other)
+			{
+				self.Add(e);
+			}
+		}
+
+		public static (K, V) Decompose<K, V>(this KeyValuePair<K, V> self)
+		{
+			return (self.Key, self.Value);
+		}
+
+		public static bool TryIndexOf<T>(this IList<T> self, T element, out int index)
+		{
+			index = self.IndexOf(element);
+			return index >= 0;
 		}
 	}
 }

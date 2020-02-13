@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Planet.Utils;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Planet.Views
 {
@@ -38,6 +39,8 @@ namespace Planet.Views
 
 		void Update()
 		{
+			Profiler.BeginSample("Planet/LineCollectionView.Update()");
+			
 			for (var i = 0; i < _lines.Count; i++)
 			{
 				var (p1, p2) = _lines[i];
@@ -59,6 +62,8 @@ namespace Planet.Views
 
 		public void UpdateConnections()
 		{
+			Profiler.BeginSample("Planet/Update connections");
+			
 			// add new connections
 			foreach (var mp in _newLines)
 			{
@@ -66,10 +71,6 @@ namespace Planet.Views
 				{
 					_lines.Add(mp);
 					_lineStates.Add(new LineViewState());
-				}
-				else
-				{
-					//Debug.Log($"existing: {mp.Item1.name} {mp.Item2.name}");
 				}
 			}
 
@@ -92,6 +93,8 @@ namespace Planet.Views
 				_lines.RemoveAt(removedIndex);
 				_lineStates.RemoveAt(removedIndex);
 			}
+			
+			Profiler.EndSample();
 		}
 
 		void DrawLine(Vector3 markerPosition, Vector3 panelPosition, LineViewState state)
