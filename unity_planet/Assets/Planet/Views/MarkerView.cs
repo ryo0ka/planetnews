@@ -15,11 +15,11 @@ namespace Planet.Views
 		float _duration;
 
 		readonly int _colorId = Shader.PropertyToID("_Color");
-		bool _isFocused, _isViewable;
+		bool _isHighlighted, _isViewable;
 
-		public void SetFocused(bool focused)
+		public void SetHighlighted(bool highlighted)
 		{
-			_isFocused = focused;
+			_isHighlighted = highlighted;
 			UpdateView();
 		}
 
@@ -36,8 +36,8 @@ namespace Planet.Views
 
 			if (_isViewable)
 			{
-				color = _color.Evaluate(_isFocused ? 1f : 0f);
-				scale = _isFocused ? 2f : 1f;
+				color = _color.Evaluate(_isHighlighted ? 1f : 0f);
+				scale = _isHighlighted ? 2f : 1f;
 			}
 			else
 			{

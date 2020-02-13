@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Planet.Views
 {
-	public class EventHeadlineView : MonoBehaviour
+	public class HeadlinePanelView : MonoBehaviour
 	{
 		[SerializeField]
 		Text _sourceText;

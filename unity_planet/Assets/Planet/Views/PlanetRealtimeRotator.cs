@@ -8,19 +8,14 @@ namespace Planet.Views
 		[SerializeField]
 		float _spinSpeedScale;
 
-		public bool CanRotate { private get; set; }
-
 		const float HourPerDay = 24;
 		const float DegPerDay = -360;
 		const float DegPerSec = DegPerDay / (HourPerDay * 360);
 
 		void Update()
 		{
-			if (CanRotate)
-			{
-				var degPerSec = DegPerSec * _spinSpeedScale;
-				transform.Rotate(Vector3.up, Time.deltaTime * degPerSec, Space.Self);
-			}
+			var degPerSec = DegPerSec * _spinSpeedScale;
+			transform.Rotate(Vector3.up, Time.deltaTime * degPerSec, Space.Self);
 		}
 	}
 }
