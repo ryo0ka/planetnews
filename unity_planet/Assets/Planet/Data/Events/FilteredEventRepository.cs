@@ -4,7 +4,7 @@ using Planet.Models;
 using Planet.Utils;
 using UniRx;
 
-namespace Planet.Data
+namespace Planet.Data.Events
 {
 	public sealed class FilteredEventRepository : IEventRepository, IDisposable
 	{

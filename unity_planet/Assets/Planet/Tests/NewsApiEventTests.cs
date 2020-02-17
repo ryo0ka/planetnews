@@ -1,6 +1,8 @@
 ﻿using NewsAPI.Models;
 using NUnit.Framework;
 using Planet.Data;
+using Planet.Data.Events;
+using Planet.NewsApis;
 
 namespace Planet.Tests
 {

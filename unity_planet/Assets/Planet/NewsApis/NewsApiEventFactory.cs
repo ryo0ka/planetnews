@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using NewsAPI.Models;
-using Planet.Models;
 
-namespace Planet.Data
+namespace Planet.NewsApis
 {
 	/// <summary>
 	/// Converts NewsApi events to IEvent.

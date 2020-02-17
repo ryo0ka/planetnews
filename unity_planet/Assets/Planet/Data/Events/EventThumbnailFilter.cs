@@ -1,6 +1,6 @@
 using Planet.Models;
 
-namespace Planet.Data
+namespace Planet.Data.Events
 {
 	public sealed class EventThumbnailFilter : IEventFilter
 	{

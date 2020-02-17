@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using NewsAPI.Constants;
 using NewsAPI.OfflineCopies;
+using Planet.NewsApis;
 using UniRx;
 using Zenject;
 
-namespace Planet.Data
+namespace Planet.Data.Events
 {
 	public class EventRepositoryInstaller : Installer<ICollection<IDisposable>, EventRepositoryInstaller>
 	{

@@ -2,7 +2,7 @@ using Planet.CachedImageDownloaders;
 using UniRx.Async;
 using UnityEngine;
 
-namespace Planet.Data
+namespace Planet.Data.Images
 {
 	class CachedImageLoader : IImageLoader
 	{

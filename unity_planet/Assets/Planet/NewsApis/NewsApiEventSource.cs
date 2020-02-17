@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using NewsAPI.Models;
+using Planet.Data.Events;
 using Planet.Models;
 using UniRx;
 
-namespace Planet.Data
+namespace Planet.NewsApis
 {
 	public class NewsApiEventSource : IEventSource, IDisposable
 	{

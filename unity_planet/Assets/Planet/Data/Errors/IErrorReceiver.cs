@@ -1,6 +1,6 @@
 using System;
 
-namespace Planet.Data
+namespace Planet.Data.Errors
 {
 	public interface IErrorReceiver
 	{
