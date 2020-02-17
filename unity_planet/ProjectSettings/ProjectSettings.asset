@@ -438,6 +438,9 @@ PlayerSettings:
     m_Enabled: 1
     m_Devices:
     - Oculus
+  - m_BuildTarget: iPhone
+    m_Enabled: 1
+    m_Devices: []
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
   openGLRequireES32: 0
@@ -678,6 +681,7 @@ PlayerSettings:
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
     1: PROBUILDER_EXPERIMENTAL_FEATURES
+    4: ODIN_INSPECTOR
     7: ODIN_INSPECTOR;PROBUILDER_EXPERIMENTAL_FEATURES
     13: PROBUILDER_EXPERIMENTAL_FEATURES
     19: PROBUILDER_EXPERIMENTAL_FEATURES
