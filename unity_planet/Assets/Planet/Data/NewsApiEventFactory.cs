@@ -5,6 +5,9 @@ using Planet.Models;
 
 namespace Planet.Data
 {
+	/// <summary>
+	/// Converts NewsApi events to IEvent.
+	/// </summary>
 	public sealed class NewsApiEventFactory
 	{
 		readonly IReadOnlyDictionary<string, NewsApiSource> _sources;

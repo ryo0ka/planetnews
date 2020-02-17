@@ -13,7 +13,7 @@ namespace Planet
 			ImageLoaderInstaller.Install(Container);
 			ErrorReceiverInstaller.Install(Container);
 			CountryGpsDictionaryInstaller.Install(Container);
-			EventStreamerInstaller.Install(Container, disposables);
+			EventRepositoryInstaller.Install(Container, disposables);
 		}
 
 		void Start()
