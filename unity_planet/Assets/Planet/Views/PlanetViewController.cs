@@ -33,7 +33,7 @@ namespace Planet.Views
 		ViewAngleComparer _viewAngleComparer;
 		VerticalViewAngleComparer _verticalViewAngleComparer;
 
-		const float MaxViewAngle = 90;
+		const float MaxViewAngle = 60;
 
 		void Awake()
 		{
