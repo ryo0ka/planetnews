@@ -13,7 +13,7 @@ namespace Planet.Data.Events
 		readonly CompositeDisposable _disposable;
 		readonly Subject<IEvent> _eventsAdded;
 		readonly Dictionary<string, List<IEvent>> _events;
-		readonly List<string> _countries;
+		readonly HashSet<string> _countries;
 
 		public FilteredEventRepository(IEventSource source, IEventFilter filter)
 		{
@@ -22,7 +22,7 @@ namespace Planet.Data.Events
 			_disposable = new CompositeDisposable();
 			_eventsAdded = new Subject<IEvent>().AddTo(_disposable);
 			_events = new Dictionary<string, List<IEvent>>();
-			_countries = new List<string>();
+			_countries = new HashSet<string>();
 
 			_source.OnEventAdded
 			       .Subscribe(e => AddSourceEvent(e))
