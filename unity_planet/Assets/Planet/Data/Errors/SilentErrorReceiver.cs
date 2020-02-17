@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Planet.Data
+namespace Planet.Data.Errors
 {
 	public class SilentErrorReceiver : IErrorReceiver
 	{

@@ -1,7 +1,8 @@
 using System;
 using NewsAPI.Models;
+using Planet.Models;
 
-namespace Planet.Models
+namespace Planet.NewsApis
 {
 	public sealed class NewsApiEvent : IEvent
 	{

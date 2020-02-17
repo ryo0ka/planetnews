@@ -1,7 +1,7 @@
 using Planet.CachedImageDownloaders;
 using Zenject;
 
-namespace Planet.Data
+namespace Planet.Data.Images
 {
 	public sealed class ImageLoaderInstaller : Installer<ImageLoaderInstaller>
 	{

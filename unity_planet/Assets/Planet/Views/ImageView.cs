@@ -1,6 +1,8 @@
 using System;
 using Planet.CachedImageDownloaders;
 using Planet.Data;
+using Planet.Data.Errors;
+using Planet.Data.Images;
 using UniRx.Async;
 using UnityEngine;
 using UnityEngine.UI;

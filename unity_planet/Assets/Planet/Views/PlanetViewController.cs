@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Planet.Data;
+using Planet.Data.Events;
 using Planet.Models;
 using Planet.Utils;
 using UniRx;
@@ -24,8 +25,7 @@ namespace Planet.Views
 		HeadlinePanelCollectionView _panels;
 
 		Camera _camera;
-		IEventStreamer _events;
-		HashSet<string> _countries;
+		IEventRepository _events;
 		List<(string, int)?> _mappedEvents;
 		List<(string, int)?> _lastMappedEvents;
 		List<(string, int)?> _lastMappedEventsCopy;
@@ -34,11 +34,10 @@ namespace Planet.Views
 		ViewAngleComparer _viewAngleComparer;
 		VerticalViewAngleComparer _verticalViewAngleComparer;
 
-		const float MaxViewAngle = 90;
+		const float MaxViewAngle = 60;
 
 		void Awake()
 		{
-			_countries = new HashSet<string>();
 			_mappedEvents = new List<(string, int)?>();
 			_lastMappedEvents = new List<(string, int)?>();
 			_lastMappedEventsCopy = new List<(string, int)?>();
@@ -49,7 +48,7 @@ namespace Planet.Views
 		}
 
 		[Inject]
-		public void Inject(IEventStreamer eventStreamer)
+		public void Inject(IEventRepository eventStreamer)
 		{
 			_events = eventStreamer;
 		}
@@ -69,8 +68,7 @@ namespace Planet.Views
 		void OnEventAdded(IEvent ev)
 		{
 			var country = ev.Country;
-			_countries.Add(country);
-
+			
 			// Instantiate markers for new countries
 			_markers.AddMarker(country);
 			_markers.SetMarkerViewable(country, true);
@@ -123,7 +121,7 @@ namespace Planet.Views
 			Profiler.BeginSample("Sample view angles");
 
 			// sample view angles
-			foreach (var country in _countries)
+			foreach (var country in _events.Countries)
 			{
 				var viewAngles = _markers.CalcViewAngles(country, _camera.transform);
 				if (TestThresholdAngles(viewAngles))

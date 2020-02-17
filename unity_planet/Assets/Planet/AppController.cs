@@ -1,4 +1,7 @@
 using Planet.Data;
+using Planet.Data.Errors;
+using Planet.Data.Events;
+using Planet.Data.Images;
 using UniRx;
 using Zenject;
 
@@ -13,7 +16,7 @@ namespace Planet
 			ImageLoaderInstaller.Install(Container);
 			ErrorReceiverInstaller.Install(Container);
 			CountryGpsDictionaryInstaller.Install(Container);
-			EventStreamerInstaller.Install(Container, disposables);
+			EventRepositoryInstaller.Install(Container, disposables);
 		}
 
 		void Start()

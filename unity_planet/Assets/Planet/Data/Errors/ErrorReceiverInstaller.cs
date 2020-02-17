@@ -1,6 +1,6 @@
 using Zenject;
 
-namespace Planet.Data
+namespace Planet.Data.Errors
 {
 	public class ErrorReceiverInstaller : Installer<ErrorReceiverInstaller>
 	{
