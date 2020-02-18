@@ -4,13 +4,16 @@ using UnityEngine;
 
 namespace Planet.Views.Handles
 {
-	public class RotationHandleView : MonoBehaviour
+	/// <summary>
+	/// Describes focus/selection state for user.
+	/// </summary>
+	public class PlanetHandleView : MonoBehaviour
 	{
 		[SerializeField]
 		MeshRenderer[] _renderers;
 
 		[SerializeField]
-		Material _sourceMaterial;
+		Material _sourceMaterial; // template for _material
 
 		[SerializeField]
 		Material _planetMaterial;
@@ -33,19 +36,19 @@ namespace Planet.Views.Handles
 		}
 
 		[Button, DisableInEditorMode]
-		public void StartPing()
+		public void StartSelected()
 		{
 			DOSelectionNormal(0.5f);
 		}
 
 		[Button, DisableInEditorMode]
-		public void EndPing()
+		public void EndSelected()
 		{
 			DOSelectionNormal(0f);
 		}
 
 		[Button, DisableInEditorMode]
-		public void StartGrab()
+		public void StartGrabbed()
 		{
 			DOSelectionNormal(1f);
 		}
@@ -57,7 +60,7 @@ namespace Planet.Views.Handles
 		}
 
 		[Button, DisableInEditorMode]
-		public void EndGrab()
+		public void EndGrabbed()
 		{
 			DOSelectionNormal(0f);
 		}
