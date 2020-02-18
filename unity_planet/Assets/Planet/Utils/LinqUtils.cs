@@ -74,6 +74,14 @@ namespace Planet.Utils
 			}
 		}
 
+		public static void RemoveRange<T>(this ICollection<T> self, IEnumerable<T> other)
+		{
+			foreach (var e in other)
+			{
+				self.Remove(e);
+			}
+		}
+
 		public static (K, V) Decompose<K, V>(this KeyValuePair<K, V> self)
 		{
 			return (self.Key, self.Value);

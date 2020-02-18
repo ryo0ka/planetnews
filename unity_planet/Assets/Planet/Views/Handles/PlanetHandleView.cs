@@ -1,16 +1,21 @@
+using System;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using UniRx.Async;
 using UnityEngine;
 
 namespace Planet.Views.Handles
 {
-	public class RotationHandleView : MonoBehaviour
+	/// <summary>
+	/// Describes focus/selection state for user.
+	/// </summary>
+	public class PlanetHandleView : MonoBehaviour
 	{
 		[SerializeField]
 		MeshRenderer[] _renderers;
 
 		[SerializeField]
-		Material _sourceMaterial;
+		Material _sourceMaterial; // template for _material
 
 		[SerializeField]
 		Material _planetMaterial;
@@ -33,32 +38,34 @@ namespace Planet.Views.Handles
 		}
 
 		[Button, DisableInEditorMode]
-		public void StartPing()
+		public void StartHighlightingHalf()
 		{
 			DOSelectionNormal(0.5f);
 		}
 
 		[Button, DisableInEditorMode]
-		public void EndPing()
+		public void EndHighlightingHalf()
 		{
 			DOSelectionNormal(0f);
 		}
 
 		[Button, DisableInEditorMode]
-		public void StartGrab()
+		public void StartHighlighting()
 		{
 			DOSelectionNormal(1f);
 		}
 
-		// should be called every frame
-		public void StayGrab(float deltaAngle)
+		[Button, DisableInEditorMode]
+		public void EndHighlighting()
 		{
-			//TODO Implement
+			DOSelectionNormal(0f);
 		}
 
 		[Button, DisableInEditorMode]
-		public void EndGrab()
+		public async void BlinkHighlight()
 		{
+			DOSelectionNormal(1f);
+			await UniTask.Delay(TimeSpan.FromSeconds(_duration));
 			DOSelectionNormal(0f);
 		}
 
