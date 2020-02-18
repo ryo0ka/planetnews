@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Planet.Models;
+using Planet.Rider;
+using Planet.Utils;
 
 namespace Planet.Data.Events
 {
@@ -10,6 +12,7 @@ namespace Planet.Data.Events
 		/// Return all events from which `GetEvents()` can pull at least one event.
 		/// Should be free of memory allocation on invocation.
 		/// </summary>
+		[FrequentlyCalledMethod]
 		IEnumerable<string> Countries { get; }
 
 		/// <summary>
@@ -23,6 +26,7 @@ namespace Planet.Data.Events
 		/// The last element is the latest event.
 		/// Should be free of memory allocation.
 		/// </summary>
+		[FrequentlyCalledMethod]
 		IReadOnlyList<IEvent> GetEvents(string country);
 
 		/// <summary>
