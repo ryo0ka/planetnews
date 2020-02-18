@@ -26,11 +26,11 @@ namespace Planet.Views.Handles
 		{
 			if (teasing)
 			{
-				_view.StartSelected();
+				_view.StartHighlightingHalf();
 			}
 			else
 			{
-				_view.EndSelected();
+				_view.EndHighlightingHalf();
 			}
 		}
 
@@ -38,12 +38,17 @@ namespace Planet.Views.Handles
 		{
 			if (handling)
 			{
-				_view.StartGrabbed();
+				_view.StartHighlighting();
 			}
 			else
 			{
-				_view.EndGrabbed();
+				_view.EndHighlighting();
 			}
+		}
+
+		public void Blink()
+		{
+			_view.BlinkHighlight();
 		}
 
 		[Button]
@@ -53,7 +58,7 @@ namespace Planet.Views.Handles
 
 			const float Duration = 0.3f;
 			var ease = AnimationCurve.EaseInOut(0, 0, 1, 1);
-			
+
 			var startTime = Time.time;
 			var done = false;
 			while (!done)

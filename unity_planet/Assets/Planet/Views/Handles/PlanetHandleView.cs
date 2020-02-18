@@ -1,5 +1,7 @@
+using System;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using UniRx.Async;
 using UnityEngine;
 
 namespace Planet.Views.Handles
@@ -36,32 +38,34 @@ namespace Planet.Views.Handles
 		}
 
 		[Button, DisableInEditorMode]
-		public void StartSelected()
+		public void StartHighlightingHalf()
 		{
 			DOSelectionNormal(0.5f);
 		}
 
 		[Button, DisableInEditorMode]
-		public void EndSelected()
+		public void EndHighlightingHalf()
 		{
 			DOSelectionNormal(0f);
 		}
 
 		[Button, DisableInEditorMode]
-		public void StartGrabbed()
+		public void StartHighlighting()
 		{
 			DOSelectionNormal(1f);
 		}
 
-		// should be called every frame
-		public void StayGrab(float deltaAngle)
+		[Button, DisableInEditorMode]
+		public void EndHighlighting()
 		{
-			//TODO Implement
+			DOSelectionNormal(0f);
 		}
 
 		[Button, DisableInEditorMode]
-		public void EndGrabbed()
+		public async void BlinkHighlight()
 		{
+			DOSelectionNormal(1f);
+			await UniTask.Delay(TimeSpan.FromSeconds(_duration));
 			DOSelectionNormal(0f);
 		}
 

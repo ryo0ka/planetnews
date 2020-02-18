@@ -7,7 +7,7 @@ using Zenject;
 namespace Planet.Views.Handles
 {
 	public sealed class TouchHandleController : MonoBehaviour,
-		IBeginDragHandler, IDragHandler, IEndDragHandler
+		IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 	{
 		[SerializeField]
 		float _viewportToAngle;
@@ -35,13 +35,10 @@ namespace Planet.Views.Handles
 		void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
 		{
 			var pointerPosition = eventData.position;
-			var ray = _mainCamera.ScreenPointToRay(pointerPosition);
-			if (_handleRepository.Test(ray, out var handle) &&
-			    handle is PlanetTransformHandle planetHandle)
+			if (TestPlanetTransformHandle(pointerPosition, out _planetHandle))
 			{
 				_dragging = true;
 				_dragInitPosition = pointerPosition;
-				_planetHandle = planetHandle;
 				_planetHandle.SetHandling(true);
 				_initPlanetRotation = _planetHandle.Planet.rotation;
 				_initPlanetLocalRotation = _planetHandle.Planet.localRotation;
@@ -76,6 +73,31 @@ namespace Planet.Views.Handles
 			_dragging = false;
 			_planetHandle?.SetHandling(false);
 			_planetHandle = null;
+		}
+
+		void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
+		{
+			if (_dragging) return;
+
+			if (TestPlanetTransformHandle(eventData.pressPosition, out _planetHandle))
+			{
+				_planetHandle.Blink();
+				_planetHandle.ResetRotation();
+			}
+		}
+
+		bool TestPlanetTransformHandle(Vector3 pointerPosition, out PlanetTransformHandle handle)
+		{
+			var ray = _mainCamera.ScreenPointToRay(pointerPosition);
+			if (_handleRepository.Test(ray, out var h) &&
+			    h is PlanetTransformHandle planetHandle)
+			{
+				handle = planetHandle;
+				return true;
+			}
+
+			handle = null;
+			return false;
 		}
 	}
 }
